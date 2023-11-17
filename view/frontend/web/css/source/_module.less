@@ -1,0 +1,244 @@
+/* Css for pop-up*/
+& when (@media-common = true) {
+    .age-verification-container {
+        display: none;
+    }
+    .ageverification-poup {
+        .age-pop-up {
+            .pop-cont {
+                padding: 15px;
+            }
+            p.title {
+                margin: 0px;
+                padding: 10px 0;
+                font-size: 24px;
+                text-transform: uppercase;
+                color: #fff;
+                background: linear-gradient(45deg, #FF21FD, #00E1FF);
+                font-weight: bold;
+            }
+            .age-verification-fieldset {
+                padding: 0 20px;
+            }
+            background: transparent;
+            text-align: center;
+            display: none;
+        }
+        .verify {
+            padding: 0px 0 40px 0;
+            p.small {
+                text-transform: none;
+                font-size: 22px;
+            }
+            img {
+                border: 0;
+                vertical-align: top;
+                max-width: 100%;
+                height: auto;
+                background: #fff;
+            }
+        }
+        .age-verification-fieldset {
+            .agree_term_condition_error {
+                display: none;
+                color: red;
+            }
+        }
+        .pop-cont {
+            .buttons-set {
+                margin: 20px auto 0;
+                .button {
+                    border: 1px solid #00E1FF;
+                    border-radius: 5px;
+                    text-transform: uppercase;
+                    margin: 5px 25px;
+                    font-size: 16px;
+                    background: #00E1FF;
+                    padding: 13px 28px;
+                    text-decoration: none;
+                    display: inline-block;
+                    transition: 300ms all 0s;
+                    line-height: 0.8;
+                    &:hover {
+                        background: #fff;
+                        color: #00E1FF;
+                    }
+                }
+                .valid-age {
+                    color: #212529;
+                }
+                .not-valid-age {
+                    border: 1px solid #FF21FD;
+                    background: #FF21FD;
+                    color: #fff;
+                    &:hover {
+                        background: #fff;
+                        color: #FF21FD;
+                    }
+                }
+            }
+            p.small {
+                display: block;
+                text-align: center;
+                font-size: 16px;
+                color: #212529;
+                margin: 0;
+                font-weight: bold;
+                padding: 10px;
+            }
+        }
+        .popup-logo {
+            text-align: center;
+            font-size: 30px;
+            padding: 16px 0px;
+            img {
+                width: 200px;
+            }
+        }
+        
+        .modal-inner-wrap {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 0px;
+            color: #000;
+            z-index: 10000;
+            margin: 0 !important;
+            min-height: 100px;
+            text-align: center;
+            font-size: 15px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            right: auto;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            visibility: hidden;
+            transition: .5s all 0s;
+            width: auto !important;
+        }
+        .modal-footer {
+            button {
+                display: none !important;
+            }
+            display: none;
+        }
+        .action-close {
+            display: none !important;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 0;
+        }
+        .modal-header {
+            display: none;
+        }
+        &._show {
+            visibility: visible;
+            .modal-inner-wrap {
+                transform: translate(-50%, -75%);
+                opacity: 1;
+                visibility: visible;
+                margin: 0;
+            }
+        }
+    }
+    
+    .cms-page-view,
+    .cms-index-index {
+        .age-pop-up {
+            display: none;
+        }
+    }
+}
+
+@media only screen and (min-width:768px) {
+    .ageverification-poup {
+        .checkout-index-index {
+            .modal-popup {
+                .modal-inner-wrap {
+                    margin-top: -400px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:767px) {
+    .ageverification-poup {
+        .modal-inner-wrap {
+            max-width: 90%;
+        }
+        .verify {
+            min-width: 350px;
+            padding-top: 0;
+        }
+        .pop-cont {
+            .buttons-set {
+                padding: 5px 0 0 0;
+                .button {
+                    padding: 14px 12px;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    .age-pop-up {
+        p.title {
+            font-size: 24px;
+        }
+    }
+}
+@media only screen and (min-width:480px) and (max-width:767px) {
+    .ageverification-poup {
+        .pop-cont {
+            .buttons-set {
+                .button {
+                    padding: 13px 12px;
+                    font-size: 14px;
+                }
+            }
+            p.small {
+                font-size: 12px;
+                line-height: 18px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width:320px) and (max-width:479px) {
+    .age-pop-up {
+        img {
+            max-width: 150px;
+        }
+        .title {
+            font-size: 20px;
+        }
+    }
+    .ageverification-poup {
+        .verify {
+            min-width: 280px;
+            padding-top: 0;
+        }
+        .pop-cont {
+            .buttons-set {
+                padding: 14px;
+                .button {
+                    box-sizing: border-box;
+                    margin: 0;
+                    width: 49%;
+                    font-size: 13px;
+                    padding: 14px;
+                }
+            }
+            p.small {
+                font-size: 12px;
+                line-height: 18px;
+                br {
+                    display: none;
+                }
+            }
+        }
+        .age-pop-up {
+            width: 280px;
+        }
+    }
+}

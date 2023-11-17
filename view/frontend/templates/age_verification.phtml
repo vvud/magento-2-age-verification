@@ -1,0 +1,42 @@
+<?php
+/**
+ * Copyright © Open Techiz. All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ */
+
+$popupblockid  = $block->getBlockId();
+$popup_height  = $block->getHeight();
+$popup_width   = $block->getWidth();
+$popup_coockie = $block->getCookieExpire();
+$popup_coockie = floor($popup_coockie);
+$blocktitle    = $block->getBlockTitle();
+$agreebtn      = $block->getAgree();
+$disagreebtn   = $block->getDisagree();
+?>
+
+<?php if ($block->showPopUp()) : ?>
+    <div class="outer-bg age-verification-container">
+        <div id="popup" class="pop-cont age-pop-up ageconf">
+            <div class="verify">
+                <p class="title"><?= /* @escapeNotVerified */ __($blocktitle); ?></p>
+                <?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($popupblockid)->toHtml(); ?>
+                <div class="buttons-set">
+                    <a id="not-valid-age" class="button not-valid-age" title="<?= /* @escapeNotVerified */ __($disagreebtn); ?>" href="<?= $this->getUrl() ?>">
+                        <?=  /* @escapeNotVerified */ __($disagreebtn); ?>
+                    </a>
+                    <a id="valid-age" class="button valid-age" title="<?= /* @escapeNotVerified */ __($agreebtn); ?>" href="#">
+                        <?= /* @escapeNotVerified */ __($agreebtn); ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magentiz_AgeVerification/js/age-verification":{"height":"<?php echo $popup_height; ?>","width":"<?php echo $popup_width; ?>","coockieexpire":"<?php echo $popup_coockie; ?>"}
+        }
+    }
+</script>

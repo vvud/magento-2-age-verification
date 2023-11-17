@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Open Techiz. All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Cms\Block\Page" name="cms_page"/>
+            <block class="Magentiz\AgeVerification\Block\AgeVerification" ifconfig="ageverification/general/enabled" name="ageverification-block" template="Magentiz_AgeVerification::age_verification.phtml">
+                <container name="ageverification-block-content" label="AgeVerification Block"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

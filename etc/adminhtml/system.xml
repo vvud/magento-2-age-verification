@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Open Techiz. All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="magentiz" translate="label" sortOrder="500">
+            <label>Magentiz</label>
+        </tab>
+        <section id="ageverification" translate="label" type="text" sortOrder="600" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+            <class>separator-top</class>
+            <label>Age Verification Pop-up</label>
+            <tab>magentiz</tab>
+            <resource>Magentiz_AgeVerification::config_ageverification</resource>
+            <group id="general" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <label>General Settings</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10"  showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Extension</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="pages" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Pages</label>
+                    <comment>Select the Pop-Up block from the ID</comment>
+                    <source_model>Magentiz\AgeVerification\Model\Page</source_model>
+                </field>
+                <field id="popup_block" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Pop-Up Blocks</label>
+                        <comment>Select the Pop-Up block from the ID</comment>
+                        <source_model>Magento\Cms\Model\ResourceModel\Block\Collection</source_model>
+                </field>
+                <field id="cookie_interval" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                    showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Cookie Interval</label>
+                    <comment>Total time (In Hours) cookie is stored</comment>
+                </field>
+                <field id="popup_width" translate="label comment" type="text" sortOrder="70" showInDefault="1"
+                    showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Pop-Up Width</label>
+                    <comment>Width of POP-UP window in px. Set width more then 300px for increase width. Enter auto for automatic width</comment>
+                </field>
+                <field id="popup_height" translate="label comment" type="text" sortOrder="80" showInDefault="1"
+                    showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Pop-Up Height</label>
+                    <comment>Height of POP-UP window in px. Set height  more then 500px for increase height. Enter auto for automatic height</comment>
+                </field>
+                <field id="agree" translate="label comment" type="text" sortOrder="90" showInDefault="1"
+                    showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Agree button text</label>
+                    <comment>Enter agree button text.</comment>
+                </field>
+                <field id="disagree" translate="label comment" type="text" sortOrder="100" showInDefault="1"
+                    showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Disagree button text</label>
+                    <comment>Enter Disagree button text.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
