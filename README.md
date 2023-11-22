@@ -4,7 +4,9 @@
 > Magento 2 extension for verify age.
 
 > Build for https://www.elfbar.de/
-![elfbar](https://github.com/vdvuong/age-verification/docs/popup-elfbar.png)
+![elfbar](https://raw.githubusercontent.com/vdvuong/age-verification/master/docs/popup-elfbar.png)
+
+![image](https://raw.githubusercontent.com/vdvuong/age-verification/master/docs/age-validate-elfbar.png)
 
 ## Requirements
   * Magento Community Edition 2.x or Magento Enterprise Edition 2.x.
@@ -31,10 +33,19 @@ php bin/magento setup:static-content:deploy
 
 ## User guide
 
-Log into the Magento administration panel, go to ```Store > Configuration > Magentiz > Age Verification Pop-up Config```.
-Choose Yes to enable extension.
+Log into the Magento administration panel, go to ```Store > Configuration > Magentiz > Age Verification```.
 
-![image](https://github.com/vdvuong/age-verification/docs/popup.png)
+### In Pop-Up settings, choose Yes to enable age verification pop-up.
+![image](https://raw.githubusercontent.com/vdvuong/age-verification/master/docs/popup-config.png)
+
+![image](https://raw.githubusercontent.com/vdvuong/age-verification/master/docs/popup.png)
+
+### In Checkout settings, choose Yes to enable age verification validate.
+![image](https://raw.githubusercontent.com/vdvuong/age-verification/master/docs/age-config.png)
+
+![image](https://raw.githubusercontent.com/vdvuong/age-verification/master/docs/age-validate.png)
+
+![image](https://raw.githubusercontent.com/vdvuong/age-verification/master/docs/age-validate-1.png)
 
 ## Support
 If you have any issues, please [contact me](mailto:vuongvd.se@gmail.com)
