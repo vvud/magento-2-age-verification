@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Open Techiz. All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="ageverification" frontName="ageverification">
+            <module name="Magentiz_AgeVerification" before="Magento_Backend" />
+        </route>
+    </router>
+</config>

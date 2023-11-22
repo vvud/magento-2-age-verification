@@ -1,0 +1,13 @@
+<?php
+
+namespace Magentiz\AgeVerification\Model\ResourceModel\Attachment;
+
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+
+class Collection extends AbstractCollection
+{
+    protected function _construct()
+    {
+        $this->_init('Magentiz\AgeVerification\Model\Attachment', 'Magentiz\AgeVerification\Model\ResourceModel\Attachment');
+    }
+}

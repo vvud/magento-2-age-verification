@@ -1,0 +1,42 @@
+<!--
+/**
+ * Copyright © Open Techiz. All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ */
+-->
+<div class="sp-checkout-orderattachment">
+    <div class="payment-option _collapsible opc-payment-additional order-attachments">
+        <div class="payment-option-content">
+            <div class="payment-option-inner">
+                <div class="field">
+                    <div class="control">
+                        <div class="admin__page-section-title">
+                            <br>
+                            <strong><span data-bind="i18n: 'Date of Birth'"></span>:</strong>
+                            <strong>&nbsp;&nbsp;&nbsp;</strong>
+                            <strong data-bind="text: getDob()"></strong>
+                        </div>
+                        <div class="attachment-container" data-bind="foreach:attachmentList">
+                            <div data-bind="attr: { rel: hash, class:'sp-attachment-row attach-'+hash}">
+                                <div class="sp-attachment-row-content">
+                                    <div class="order-attachment-preview">
+                                        <a data-bind="attr: { href: url, title: path}" target="_blank">
+                                            <img class="thumbnail" data-bind="attr: { src: url}">
+                                        </a>
+                                        <div class="attachment-file">
+                                            <div class="filename" data-bind="text: path"></div>
+                                        </div>
+                                    </div>
+                                    <div class="order-attachment-content">
+                                        <a id="sp-attachment-download1" class="sp-attachment-download"
+                                            title="Download Item" data-bind="click: $parent.downloadFile" href="#"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

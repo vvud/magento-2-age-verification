@@ -12,13 +12,13 @@
         </tab>
         <section id="ageverification" translate="label" type="text" sortOrder="600" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
             <class>separator-top</class>
-            <label>Age Verification Pop-up</label>
+            <label>Age Verification</label>
             <tab>magentiz</tab>
             <resource>Magentiz_AgeVerification::config_ageverification</resource>
-            <group id="general" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                <label>General Settings</label>
+            <group id="popup" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <label>Pop-Up Settings</label>
                 <field id="enabled" translate="label comment" type="select" sortOrder="10"  showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Enable Extension</label>
+                    <label>Enable Pop-Up</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="pages" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
@@ -55,6 +55,34 @@
                     showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Disagree button text</label>
                     <comment>Enter Disagree button text.</comment>
+                </field>
+            </group>
+            <group id="checkout" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <label>Checkout Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Title</label>
+                </field>
+                 <field id="additional_information" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Additional Information</label>
+                </field>
+                <field id="display_position" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Display Position</label>
+                    <source_model>Magentiz\AgeVerification\Model\Config\Source\DisplayPositionOptions</source_model>
+                </field>
+                <field id="count" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Attachment Limit</label>
+                    <comment>Per Order</comment>
+                </field>
+                <field id="size" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Attachment Size, Kilobytes</label>
+                    <comment>Per File</comment>
+                </field>
+                <field id="extension" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Attachment Allowed extensions</label>
                 </field>
             </group>
         </section>

@@ -7,6 +7,7 @@
 namespace Magentiz\AgeVerification\Helper;
 
 use Magento\Store\Model\ScopeInterface;
+use Magentiz\AgeVerification\Model\Attachment;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -26,20 +27,35 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_blockFactory;
 
     /**
+     * @var \Magento\Framework\Json\EncoderInterface
+     */
+    protected $jsonEncoder;
+
+    /**
+     * @var \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection
+     */
+    protected $attachmentCollection;
+    
+    /**
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Cms\Model\Template\FilterProvider $filterProvider
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Cms\Model\BlockFactory $blockFactory
+     * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Cms\Model\Template\FilterProvider $filterProvider,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Cms\Model\BlockFactory $blockFactory
+        \Magento\Cms\Model\BlockFactory $blockFactory,
+        \Magento\Framework\Json\EncoderInterface $jsonEncoder,
+        \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection $attachmentCollection
     ) {
         $this->_filterProvider = $filterProvider;
         $this->_storeManager = $storeManager;
         $this->_blockFactory = $blockFactory;
+        $this->jsonEncoder = $jsonEncoder;
+        $this->attachmentCollection = $attachmentCollection;
         parent::__construct($context);
     }
 
@@ -196,5 +212,77 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             ScopeInterface::SCOPE_STORE);
 
         return $disagree;
+    }
+
+    /**
+     * Get title
+     * @return boolean
+     */
+    public function getTitle()
+    {
+        $titleValue = $this->scopeConfig->getValue(
+            \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_TITLE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+        return (trim($titleValue))?$titleValue:\Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_DEFAULT_TITLE;
+    }
+    
+    /**
+     * Get config for order attachments enabled
+     * @return boolean
+     */
+    public function isAgeVerificationEnabled()
+    {
+        return (bool)$this->scopeConfig->getValue(
+            \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_ENABLE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+    
+    /**
+     * Get attachment config json
+     * @param mixed $block
+     * @return string
+     */
+    public function getAgeVerficationConfig($block)
+    {
+        $attachments = $this->attachmentCollection;
+        $attachSize = $this->scopeConfig->getValue(
+            \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_SIZE,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+        if ($block->getOrder()->getId()) {
+            $attachments->addFieldToFilter('quote_id', ['is' => new \Zend_Db_Expr('null')]);
+            $attachments->addFieldToFilter('order_id', $block->getOrder()->getId());
+        }
+
+        $config = [
+            'dob' => $block->getDob(),
+            'attachments' => $block->getOrderAttachments(),
+            'attachmentLimit' => $this->scopeConfig->getValue(
+                \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_LIMIT,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ),
+            'attachmentSize' => $attachSize,
+            'attachmentExt' => $this->scopeConfig->getValue(
+                \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_EXT,
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ),
+            'attachmentUpload' => $block->getUploadUrl(),
+            'attachmentRemove' => $block->getRemoveUrl(),
+            'ageVerificationTitle' =>  $this->getTitle(),
+            'additionalInformation' => $this->scopeConfig->getValue( Attachment::AGE_VERIFICATION_ADDITIONAL_INFORMATION, ScopeInterface::SCOPE_STORE ),
+            'removeItem' => __('Remove Item'),
+            'attachmentInvalidExt' => __('Invalid File Type'),
+            'attachmentInvalidSize' => __('Size of the file is greather than allowed') . '(' . $attachSize . ' KB)',
+            'attachmentInvalidLimit' => __('You have reached the limit of files'),
+            'attachment_class' => 'sp-attachment-id',
+            'hash_class' => 'sp-attachment-hash',
+            'totalCount' => $attachments->getSize()
+        ];
+
+        return $this->jsonEncoder->encode($config);
     }
 }

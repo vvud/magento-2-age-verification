@@ -6,7 +6,7 @@
 
 namespace Magentiz\AgeVerification\Block;
 
-class AgeVerification extends \Magento\Framework\View\Element\Template
+class Popup extends \Magento\Framework\View\Element\Template
 {
     
     /**

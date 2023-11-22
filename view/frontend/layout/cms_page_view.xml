@@ -9,8 +9,8 @@
     <body>
         <referenceContainer name="content">
             <block class="Magento\Cms\Block\Page" name="cms_page"/>
-            <block class="Magentiz\AgeVerification\Block\AgeVerification" ifconfig="ageverification/general/enabled" name="ageverification-block" template="Magentiz_AgeVerification::age_verification.phtml">
-                <container name="ageverification-block-content" label="AgeVerification Block"/>
+            <block class="Magentiz\AgeVerification\Block\Popup" ifconfig="ageverification/popup/enabled" name="ageverification.popup" template="Magentiz_AgeVerification::age_verification_popup.phtml">
+                <container name="ageverification.popup.content" label="AgeVerification Block"/>
             </block>
         </referenceContainer>
     </body>

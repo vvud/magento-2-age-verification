@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Open Techiz. All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magentiz_AgeVerification::css/age-verification.css"/>
+    </head>
+    <update handle="editor"/>
+    <body>
+        <referenceBlock name="sales_order_tabs">
+            <block class="Magentiz\AgeVerification\Block\Adminhtml\Order\View\Tab\AgeVerification" name="order.tab.av" as="age_verification" template="order/view/tab/age_verification.phtml"/>
+            <action method="addTab">
+                <argument name="name" xsi:type="string">age_verification</argument>
+                <argument name="block" xsi:type="string">age_verification</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

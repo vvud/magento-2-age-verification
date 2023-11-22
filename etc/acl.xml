@@ -12,7 +12,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Magentiz_AgeVerification::config_ageverification" title="Age Verification Popup" sortOrder="10"/>
+                            <resource id="Magentiz_AgeVerification::config_ageverification" title="Age Verification" sortOrder="10"/>
                         </resource>
                     </resource>
                 </resource>

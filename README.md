@@ -4,7 +4,7 @@
 > Magento 2 extension for verify age.
 
 > Build for https://www.elfbar.de/
-![elfbar](https://github.com/vdvuong/AgeVerification/assets/59680260/2cb5baca-656f-4eca-8402-7a1d0025ae3d)
+![elfbar](https://github.com/vdvuong/age-verification/docs/popup-elfbar.png)
 
 ## Requirements
   * Magento Community Edition 2.x or Magento Enterprise Edition 2.x.
@@ -34,9 +34,7 @@ php bin/magento setup:static-content:deploy
 Log into the Magento administration panel, go to ```Store > Configuration > Magentiz > Age Verification Pop-up Config```.
 Choose Yes to enable extension.
 
-![image](https://github.com/vdvuong/AgeVerification/assets/59680260/0e32e5bc-e3ee-4725-9463-aac36daea545)
-
-![image](https://github.com/vdvuong/AgeVerification/assets/59680260/6da729e9-ec12-4861-91b9-b22f16db17f6)
+![image](https://github.com/vdvuong/age-verification/docs/popup.png)
 
 ## Support
 If you have any issues, please [contact me](mailto:vuongvd.se@gmail.com)

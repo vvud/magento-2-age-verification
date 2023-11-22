@@ -8,44 +8,25 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <ageverification>
-            <general>
+            <popup>
                 <enabled>0</enabled>
-            </general>
-        </ageverification>
-        <ageverification>
-            <general>
                 <popup_width>auto</popup_width>
-            </general>
-        </ageverification>
-        <ageverification>
-            <general>
                 <popup_height>auto</popup_height>
-            </general>
-        </ageverification>
-        <ageverification>
-            <general>
                 <cookie_interval>24</cookie_interval>
-            </general>
-        </ageverification>
-        <ageverification>
-            <general>
                 <popup_block>magentiz-age-verification</popup_block>
-            </general>
-        </ageverification>
-        <ageverification>
-            <general>
                 <pages>home</pages>
-            </general>
-        </ageverification>
-        <ageverification>
-            <general>
                 <agree>Enter</agree>
-            </general>
-        </ageverification>
-        <ageverification>
-            <general>
                 <disagree>Cancel</disagree>
-            </general>
+            </popup>
+            <checkout>
+                <enabled>0</enabled>
+                <title>Age Verification</title>
+                <additional_information></additional_information>
+                <display_position>after-shipping-address</display_position>
+                <count>2</count>
+                <size>500</size>
+                <extension>jpg,jpeg,png,gif</extension>
+            </checkout>
         </ageverification>
     </default>
 </config>

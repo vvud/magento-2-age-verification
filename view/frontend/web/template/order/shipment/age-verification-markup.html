@@ -1,0 +1,69 @@
+<!--
+/**
+ * Copyright © Open Techiz. All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ */
+-->
+<div class="sp-checkout-orderattachment">
+    <div class="payment-option _collapsible opc-payment-additional order-attachments fieldset">
+        <div class="payment-option-title field choice" data-role="title">
+            <div class="step-title action action-toggle" id="block-attachments-heading" role="heading" aria-level="2"
+                data-bind="text: getTitle()">
+            </div>
+        </div>
+        <div class="message warning"><span data-bind="i18n: 'You need to confirm your age before purchase our products!'"></span></div>
+        <div class="info" data-bind="html: getAdditionalInfo()"></div>
+        <br>
+
+        <form class="field _required" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}, event: {change: onDobChange()}">
+            <label class="label" for="age_verification_dob"><span data-bind="i18n: 'Date of Birth'"></span></label>
+            <div class="control datepicker-control">
+                <input class="input-text required-entry" type="text" data-bind="datepicker: true"
+                    data-bind="value: getDob()" name="dob" aria-required="true" id="age_verification_dob"/>
+            </div>
+            <input type="hidden" id="age_verification_dob_valid" />
+            <div class="dob-error"></div>
+        </form>
+        
+        <div class="field _required payment-option-content">
+            <label class="label" for="age_verification_dob"><span data-bind="i18n: 'Identity Attach Files'"></span></label>
+            <div class="control">
+                <div class="control">
+                    <input class="input" type="file" style="display: none;" data-bind="event: {change: fileUpload}"
+                        id="age-verification-attachment" name="order-attachment[]" />
+                    <div class="sp-attachment-drag-area" style="cursor:pointer" data-bind="
+                            click: selectFiles,
+                            event: {
+                                dragenter: dragEnter,
+                                dragover: dragOver,
+                                drop: drop
+                            }">
+                        <h4 data-bind="i18n: 'Drag or Select your files here'"></h4>
+                    </div>
+                    <div class="attachment-container" data-bind="foreach:attachmentList">
+                        <div data-bind="attr: { rel: hash, class:'sp-attachment-row attach-'+hash}">
+                            <div class="sp-attachment-row-content">
+                                <div class="order-attachment-preview">
+                                    <img class="thumbnail" data-bind="attr: { src: url}">
+                                    <div class="attachment-file">
+                                        <div class="filename" data-bind="text: path"></div>
+                                    </div>
+                                </div>
+                                <div class="order-attachment-content">
+                                    <a id="sp-attachment-remove2" class="sp-attachment-remove" title="Remove Item"
+                                        data-bind="click: $parent.deleteFile.bind($parent,attachment_id,hash)"
+                                        href="#"></a>
+                                    <input type="hidden"
+                                        data-bind="attr: { value: attachment_id, class: attachment_class}"
+                                        name="attachment-id">
+                                    <input type="hidden" name="attachment-hash" 
+                                        data-bind="attr: { value: hash, class: hash_class}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

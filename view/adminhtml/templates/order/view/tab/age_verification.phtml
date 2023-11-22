@@ -1,0 +1,18 @@
+<div data-bind="scope: 'AgeVerification'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "AgeVerification": {
+                            "component": "Magentiz_AgeVerification/js/age-verification",
+                            "dataconfig": <?= $this->getAgeVerficationConfig() ?>
+                        }
+                    }
+                }
+            }
+        }
+</script>
