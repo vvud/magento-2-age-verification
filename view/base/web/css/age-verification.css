@@ -1,3 +1,9 @@
+.field[name="shippingAddress.validate_av"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
 .sp-attachment-drag-area {
     width: 100%;
     text-align: center;
@@ -13,10 +19,23 @@
     border-bottom: 1px solid #ccc;
     position: relative;
 }
-.sp-checkout-orderattachment{
+.age-verification-container{
     padding-bottom: 10px;
 }
-.sp-checkout-orderattachment .dob-error {
+
+.age-verification-container .mage-error {
+    display: none;
+}
+
+.age-verification-container .field-validate.error input {
+    border-color: #e02b27;
+}
+
+.age-verification-container .field-validate.error .mage-error {
+    display: block;
+}
+
+.age-verification-container .dob-error {
     display: none;
     color: #e02b27;
 }

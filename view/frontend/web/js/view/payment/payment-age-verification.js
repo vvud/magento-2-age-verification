@@ -12,7 +12,7 @@ define([
         'use strict';
         return Component.extend({
             defaults: {
-                template: 'Magentiz_AgeVerification/order/payment/age-verification-markup'
+                template: 'Magentiz_AgeVerification/payment/age-verification-markup'
             },
             attachmentList: ko.observableArray([]),
             isVisible: window.checkoutConfig.ageVerificationEnabled,
@@ -77,22 +77,38 @@ define([
 
                 return this;
             },
+
+            /**
+             * Show Loader
+             */
             showRowLoader: function() {
                 $('body').trigger('processStart');
             },
 
+            /**
+             * Hide Loader
+             */
             hideRowLoader: function() {
                $('body').trigger('processStop');
             },
 
+            /**
+             * Get Av Title
+             */
             getTitle: function() {
                 return this.ageVerificationTitle;
             },
 
+            /**
+             * Get Av Additional data
+             */
             getAdditionalInfo: function() {
                 return this.additionalInfo;
             },
 
+            /**
+             * Get Dob data
+             */
             getDob: function() {
                 return this.dob;
             },
@@ -108,10 +124,10 @@ define([
              * Save Dob handler
              */
             saveDob: function() {
-                if ($('#age_verification_dob').val()) {
+                if ($('#age-verification-dob').val()) {
                     var result = true;
                     var formData = new FormData(), self = this;
-                    formData.append('dob', $('#age_verification_dob').val());
+                    formData.append('dob', $('#age-verification-dob').val());
                     if (window.FORM_KEY) {
                         formData.append('form_key', window.FORM_KEY);
                     }
@@ -122,16 +138,16 @@ define([
                         success: function(res) {
                             if (res.success) {
                                 $('.dob-error').slideUp();
-                                $('#age_verification_dob_valid').val('1');
+                                $('#age-verification-dob-valid').val('1');
                                 result = true;
                             } else {
-                                $('#age_verification_dob_valid').val('');
+                                $('#age-verification-dob-valid').val('');
                                 $('.dob-error').text($.mage.__(res.error)).slideDown();
                                 result = false;
                             }
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
-                            $('#age_verification_dob_valid').val('');
+                            $('#age-verification-dob-valid').val('');
                             result = false;
                             self.addError(thrownError);
                         },

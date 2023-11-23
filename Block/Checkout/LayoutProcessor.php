@@ -6,9 +6,6 @@
 
 namespace Magentiz\AgeVerification\Block\Checkout;
 
-use \Exception;
-use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magentiz\AgeVerification\Model\Attachment as AgeVerification;
 
@@ -33,15 +30,13 @@ class LayoutProcessor implements \Magento\Checkout\Block\Checkout\LayoutProcesso
     /**
      * LayoutProcessor constructor.
      *
-     * @param AttributeMetadataDataProvider $attributeMetadataDataProvider
-     * @param AttributeMapper               $attributeMapper
-     * @param AttributeMerger               $merger
-     * @param CustomerSession               $customerSession
-     * @param Config                        $configHelper
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magentiz\AgeVerification\Helper\Data $dataHelper
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        CustomerSession $customerSession,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Customer\Model\Session $customerSession,
         \Magentiz\AgeVerification\Helper\Data $dataHelper
 
     ) {
@@ -72,39 +67,89 @@ class LayoutProcessor implements \Magento\Checkout\Block\Checkout\LayoutProcesso
                     $this->addToAfterPaymentMethods($jsLayout);
                         break;
             }
+
+            $jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']
+                ['payment']['children']['additional-payment-validators']['children']['av-validator'] =
+                [
+                    'component' => 'Magentiz_AgeVerification/js/view/payment/validator'
+                ];
         }
 
         return $jsLayout;
     }
 
+    /**
+     * @param $jsLayout
+     * @return $jsLayout
+     */
+    private function addValidator(&$jsLayout)
+    {
+        $validator = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
+            ['children']['shippingAddress']['children']['before-form']['children'];
+
+        $validator['validate_av'] =
+        [
+            'component' => 'Magento_Ui/js/form/element/abstract',
+            'config' => [
+                'customScope' => 'shippingAddress',
+                'template' => 'ui/form/field',
+                'options' => [],
+                'id' => 'validate_av'
+            ],
+            'dataScope' => 'shippingAddress.validate_av',
+            'label' => __('Validate Age Verification'),
+            'value' => '0',
+            'provider' => 'checkoutProvider',
+            'visible' => true,
+            'validation' => [
+                'required-entry' => true,
+                'validate-av' => true
+            ],
+            'sortOrder' => 200,
+            'id' => 'validate_av'
+        ];        
+
+        return $jsLayout;
+    }
+
+    /**
+     * @param $jsLayout
+     * @return $jsLayout
+     */
     protected function addToAfterShippingAddress(&$jsLayout)
     {
         $shippingAddressId = $this->customerSession->getCustomer()->getDefaultShipping();
-        
-        if ($shippingAddressId && 
+
+        if ($shippingAddressId &&
             isset($jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
                 ['children']['shippingAddress']['children']['before-form']['children'])
         ) {
             $fields = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
                     ['children']['shippingAddress']['children']['before-form']['children'];
-        } 
-        
-        if (!$shippingAddressId &&  
+            $this->addValidator($jsLayout);
+        }
+
+        if (!$shippingAddressId &&
             isset($jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
                 ['children']['shippingAddress']['children']['shipping-address-fieldset']['children'])
         ){
             $fields = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
                     ['children']['shippingAddress']['children']['shipping-address-fieldset']['children'];
+            $this->addValidator($jsLayout);
         }
 
         $fields['age-verification-after-shipment-address'] =
         [
-            'component' => 'Magentiz_AgeVerification/js/view/order/shipment/shipment-age-verification'
+            'component' => 'Magentiz_AgeVerification/js/view/shipment/shipment-age-verification'
         ];
 
         return $jsLayout;
     }
 
+    /**
+     * @param $jsLayout
+     * @return $jsLayout
+     */
     protected function addToAfterShippingMethods(&$jsLayout)
     {
         if (isset($jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
@@ -117,16 +162,22 @@ class LayoutProcessor implements \Magento\Checkout\Block\Checkout\LayoutProcesso
             [
                 'component'     => 'uiComponent',
                 'displayArea'   => 'shippingAdditional',
-                'children'      =>  
+                'children'      =>
                 [
-                    'age-verification'=> ['component' => 'Magentiz_AgeVerification/js/view/order/shipment/shipment-age-verification']
+                    'age-verification'=> ['component' => 'Magentiz_AgeVerification/js/view/shipment/shipment-age-verification']
                 ]
             ];
+
+            $this->addValidator($jsLayout);
         }
 
         return $jsLayout;
     }
 
+    /**
+     * @param $jsLayout
+     * @return $jsLayout
+     */
     protected function addToAfterPaymentMethods(&$jsLayout)
     {
         if (isset($jsLayout['components']['checkout']['children']['steps']['children']['billing-step']
@@ -134,10 +185,10 @@ class LayoutProcessor implements \Magento\Checkout\Block\Checkout\LayoutProcesso
         ) {
             $fields = &$jsLayout['components']['checkout']['children']['steps']['children']['billing-step']
                     ['children']['payment']['children']['afterMethods']['children'];
-            
-            $fields['age-verification-after-payment-methods'] = 
+
+            $fields['age-verification-after-payment-methods'] =
             [
-                'component' => 'Magentiz_AgeVerification/js/view/order/payment/payment-age-verification'
+                'component' => 'Magentiz_AgeVerification/js/view/payment/payment-age-verification'
             ];
         }
 

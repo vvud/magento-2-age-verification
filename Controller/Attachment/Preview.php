@@ -33,6 +33,9 @@ class Preview extends \Magento\Framework\App\Action\Action
         $this->attachmentHelper = $attachmentHelper;
     }
 
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Raw|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $response = $this->resultRawFactory->create();

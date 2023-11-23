@@ -20,7 +20,7 @@ class AgeVerification extends AbstractOrder implements TabInterface
      * @var \Magentiz\AgeVerification\Helper\Attachment
      */
     protected $dataHelper;
-   
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -31,6 +31,8 @@ class AgeVerification extends AbstractOrder implements TabInterface
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Sales\Helper\Admin $adminHelper
      * @param \Magentiz\AgeVerification\Helper\Attachment $attachmentHelper
+     * @param \Magentiz\AgeVerification\Helper\Data $dataHelper
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param array $data
      */
     public function __construct(
@@ -48,11 +50,17 @@ class AgeVerification extends AbstractOrder implements TabInterface
         $this->scopeConfig = $scopeConfig;
     }
 
+    /**
+     * @return \Magento\Sales\Model\Order
+     */
     public function getOrder()
     {
         return $this->_coreRegistry->registry('current_order');
     }
 
+    /**
+     * @return string
+     */
     public function getAgeVerficationConfig()
     {
         $config = $this->dataHelper->getAgeVerficationConfig($this);
@@ -60,11 +68,17 @@ class AgeVerification extends AbstractOrder implements TabInterface
         return $config;
     }
 
+    /**
+     * @return date
+     */
     public function getDob()
     {
         return $this->getOrder()->getDob();
     }
 
+    /**
+     * @return array
+     */
     public function getOrderAttachments()
     {
         $orderId = $this->getOrder()->getId();
@@ -72,6 +86,9 @@ class AgeVerification extends AbstractOrder implements TabInterface
         return $this->attachmentHelper->getOrderAttachments($orderId);
     }
 
+    /**
+     * @return string
+     */
     public function getUploadUrl()
     {
         return $this->getUrl(
@@ -80,6 +97,9 @@ class AgeVerification extends AbstractOrder implements TabInterface
         );
     }
 
+    /**
+     * @return string
+     */
     public function getRemoveUrl()
     {
         return $this->getUrl(
@@ -88,21 +108,33 @@ class AgeVerification extends AbstractOrder implements TabInterface
         );
     }
 
+    /**
+     * @return \Magento\Framework\Phrase|string
+     */
     public function getTabLabel()
     {
         return __($this->dataHelper->getTitle());
     }
 
+    /**
+     * @return \Magento\Framework\Phrase|string
+     */
     public function getTabTitle()
     {
         return __($this->dataHelper->getTitle());
     }
 
+    /**
+     * @return bool
+     */
     public function canShowTab()
     {
         return $this->dataHelper->isAgeVerificationEnabled();
     }
 
+    /**
+     * @return bool
+     */
     public function isHidden()
     {
         return false;

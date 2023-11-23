@@ -7,14 +7,16 @@ define([
     'ko',
     'uiComponent',
     'mage/translate',
-    'mage/calendar'
-], function ($, ko, Component) {
+    'mage/calendar',
+    'Magento_Checkout/js/model/step-navigator'
+], function ($, ko, Component, stepNavigator) {
         'use strict';
         return Component.extend({
             defaults: {
-                template: 'Magentiz_AgeVerification/order/shipment/age-verification-markup'
+                template: 'Magentiz_AgeVerification/shipment/age-verification-markup'
             },
             attachmentList: ko.observableArray([]),
+            errorValidationMessage: ko.observable(false),
             isVisible: window.checkoutConfig.ageVerificationEnabled,
             
             initialize: function () {
@@ -109,10 +111,11 @@ define([
              * Save Dob handler
              */
             saveDob: function() {
-                if ($('#age_verification_dob').val()) {
+                if ($('#age-verification-dob').val()) {
+                    $('.av-dob-field').removeClass('error');
                     var result = true;
                     var formData = new FormData(), self = this;
-                    formData.append('dob', $('#age_verification_dob').val());
+                    formData.append('dob', $('#age-verification-dob').val());
                     if (window.FORM_KEY) {
                         formData.append('form_key', window.FORM_KEY);
                     }
@@ -122,17 +125,17 @@ define([
                         data: formData,
                         success: function(res) {
                             if (res.success) {
-                                $('.dob-error').slideUp();
-                                $('#age_verification_dob_valid').val('1');
+                                $('#age-verification-dob-valid').val('1');
                                 result = true;
                             } else {
-                                $('#age_verification_dob_valid').val('');
-                                $('.dob-error').text($.mage.__(res.error)).slideDown();
+                                $('#age-verification-dob-valid').val('');
+                                $('.av-dob-error').text($.mage.__(res.error));
+                                $('.av-dob-field').addClass('error');
                                 result = false;
                             }
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
-                            $('#age_verification_dob_valid').val('');
+                            $('#age-verification-dob-valid').val('');
                             result = false;
                             self.addError(thrownError);
                         },
@@ -180,6 +183,7 @@ define([
                         if(result['attachment_count']){
                             self.files = result['attachment_count'];
                         }
+                        $('.av-attachment-field').removeClass('error');
                         self.hideRowLoader();
                     },
                     error: function(xhr, ajaxOptions, thrownError) {

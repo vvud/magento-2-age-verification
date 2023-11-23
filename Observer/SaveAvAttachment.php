@@ -9,10 +9,23 @@ namespace Magentiz\AgeVerification\Observer;
 use Magento\Framework\Event\Observer as EventObserver;
 use Magento\Framework\Event\ObserverInterface;
 
-class SaveAvAttachmentAfterPlaceObserver implements ObserverInterface
+class SaveAvAttachment implements ObserverInterface
 {
-    protected $attachmentCollection;
 
+    /**
+     * @var \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection
+     */
+    protected $attachmentCollection;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * SaveAvAttachment constructor.
+     * @param \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection $attachmentCollection
+     * @param \Psr\Log\LoggerInterface $logger
+     */
     public function __construct(
         \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection $attachmentCollection,
         \Psr\Log\LoggerInterface $logger
@@ -21,6 +34,10 @@ class SaveAvAttachmentAfterPlaceObserver implements ObserverInterface
         $this->logger = $logger;
     }
 
+    /**
+     * @param EventObserver $observer
+     * @return $this|void
+     */
     public function execute(EventObserver $observer)
     {
         $order = $observer->getEvent()->getOrder();

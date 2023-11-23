@@ -6,7 +6,7 @@
 define([
     'uiComponent',
     'Magento_Checkout/js/model/payment/additional-validators',
-    'Magentiz_AgeVerification/js/model/age-verification-validator',
+    'Magentiz_AgeVerification/js/model/av-validator',
 ], function (Component, additionalValidators, avValidator) {
     'use strict';
     additionalValidators.registerValidator(avValidator);

@@ -6,11 +6,8 @@
 
 namespace Magentiz\AgeVerification\Model;
 
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Checkout\Model\ConfigProviderInterface;
-use Magento\Framework\UrlInterface;
-use Magento\Checkout\Model\Session as CheckoutSession;
 use Magentiz\AgeVerification\Model\Attachment;
 
 class AgeVerificationConfigProvider implements ConfigProviderInterface
@@ -46,16 +43,17 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
     protected $dataHelper;
 
     /**
-     * @param ScopeConfigInterface $scopeConfig
-     * @param UrlInterface $urlBuilder
-     * @param CheckoutSession $checkoutSession
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Framework\UrlInterface $urlBuilder
+     * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection $attachmentCollection
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magentiz\AgeVerification\Helper\Data $dataHelper
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        UrlInterface $urlBuilder,
-        CheckoutSession $checkoutSession,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Framework\UrlInterface $urlBuilder,
+        \Magento\Checkout\Model\Session $checkoutSession,
         \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection $attachmentCollection,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magentiz\AgeVerification\Helper\Data $dataHelper
@@ -68,6 +66,11 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
         $this->dataHelper = $dataHelper;
     }
 
+    /**
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getConfig()
     {
         $uploadedAttachments = $this->getUploadedAttachments();
@@ -91,6 +94,11 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
         ];
     }
 
+    /**
+     * @return array|bool
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     private function getUploadedAttachments()
     {
         if ($quoteId = $this->checkoutSession->getQuote()->getId()) {
@@ -115,12 +123,12 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
             }
 
             $result = $attachments->toArray();
-            
+
             foreach ($result['items'] as $key => $value) {
                 $result['items'][$key]['attachment_class'] = 'sp-attachment-id'.$value['attachment_id'];
                 $result['items'][$key]['hash_class'] = 'sp-attachment-hash'.$value['attachment_id'] ;
             }
-            
+
             $result = $result['items'];
 
             return array('result' => $result,'totalCount'=> $attachments->getSize());
@@ -129,6 +137,9 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
         return false;
     }
 
+    /**
+     * @return bool
+     */
     private function isAgeVerificationEnabled()
     {
         $moduleEnabled = $this->scopeConfig->getValue(
@@ -139,6 +150,9 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
         return ($moduleEnabled);
     }
 
+    /**
+     * @return string
+     */
     private function getOrderAttachmentFileLimit()
     {
         return $this->scopeConfig->getValue(
@@ -147,6 +161,9 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
         );
     }
 
+    /**
+     * @return string
+     */
     private function getOrderAttachmentFileSize()
     {
         return $this->scopeConfig->getValue(
@@ -155,6 +172,9 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
         );
     }
 
+    /**
+     * @return string
+     */
     private function getOrderAttachmentFileExt()
     {
         return $this->scopeConfig->getValue(
@@ -163,16 +183,25 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
         );
     }
 
+    /**
+     * @return string
+     */
     public function getBodUpdateUrl()
     {
         return $this->urlBuilder->getUrl('ageverification/quote/save');
     }
 
+    /**
+     * @return string
+     */
     public function getAttachmentUploadUrl()
     {
         return $this->urlBuilder->getUrl('ageverification/attachment/upload');
     }
 
+    /**
+     * @return string
+     */
     public function getAttachmentRemoveUrl()
     {
         return $this->urlBuilder->getUrl('ageverification/attachment/delete');

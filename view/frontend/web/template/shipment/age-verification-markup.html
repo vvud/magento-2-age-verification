@@ -4,7 +4,7 @@
  * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
  */
 -->
-<div class="sp-checkout-orderattachment">
+<div class="age-verification-container">
     <div class="payment-option _collapsible opc-payment-additional order-attachments fieldset">
         <div class="payment-option-title field choice" data-role="title">
             <div class="step-title action action-toggle" id="block-attachments-heading" role="heading" aria-level="2"
@@ -15,18 +15,20 @@
         <div class="info" data-bind="html: getAdditionalInfo()"></div>
         <br>
 
-        <form class="field _required" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}, event: {change: onDobChange()}">
-            <label class="label" for="age_verification_dob"><span data-bind="i18n: 'Date of Birth'"></span></label>
+        <form class="field _required field-validate av-dob-field" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}, event: {change: onDobChange()}">
+            <label class="label" for="age-verification-dob"><span data-bind="i18n: 'Date of Birth'"></span></label>
             <div class="control datepicker-control">
                 <input class="input-text required-entry" type="text" data-bind="datepicker: true"
-                    data-bind="value: getDob()" name="dob" aria-required="true" id="age_verification_dob"/>
+                    data-bind="value: getDob()" name="dob" aria-required="true" id="age-verification-dob"/>
             </div>
-            <input type="hidden" id="age_verification_dob_valid" />
-            <div class="dob-error"></div>
+            <input type="hidden" id="age-verification-dob-valid" />
+            <div class="mage-error av-dob-error">
+                <span data-bind="i18n: 'This is a required field.'"></span>
+            </div>
         </form>
         
-        <div class="field _required payment-option-content">
-            <label class="label" for="age_verification_dob"><span data-bind="i18n: 'Identity Attach Files'"></span></label>
+        <div class="field _required field-validate av-attachment-field payment-option-content">
+            <label class="label" for="age-verification-dob"><span data-bind="i18n: 'Identity Attach Files'"></span></label>
             <div class="control">
                 <div class="control">
                     <input class="input" type="file" style="display: none;" data-bind="event: {change: fileUpload}"
@@ -62,6 +64,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="mage-error">
+                    <span data-bind="i18n: 'This is a required field.'"></span>
                 </div>
             </div>
         </div>

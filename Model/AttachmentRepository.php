@@ -58,7 +58,19 @@ class AttachmentRepository implements AttachmentRepositoryInterface
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    private $storeManager;
+    protected $storeManager;
+    /**
+     * @var AttachmentFactory|BlockFactory
+     */
+    protected $blockFactory;
+    /**
+     * @var BlockCollectionFactory|AttachmentCollectionFactory
+     */
+    protected $blockCollectionFactory;
+    /**
+     * @var Data\AttachmentInterfaceFactory|Data\BlockInterfaceFactory
+     */
+    protected $dataBlockFactory;
 
     /**
      * @param ResourceBlock $resource
@@ -90,6 +102,12 @@ class AttachmentRepository implements AttachmentRepositoryInterface
         $this->storeManager = $storeManager;
     }
 
+    /**
+     * @param Data\AttachmentInterface $attachment
+     * @return Data\AttachmentInterface|mixed
+     * @throws CouldNotSaveException
+     * @throws NoSuchEntityException
+     */
     public function save(Data\AttachmentInterface $attachment)
     {
         $storeId = $this->storeManager->getStore()->getId();
@@ -102,6 +120,11 @@ class AttachmentRepository implements AttachmentRepositoryInterface
         return $attachment;
     }
 
+    /**
+     * @param $attachmentId
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
     public function getById($attachmentId)
     {
         $attachment = $this->blockFactory->create();
@@ -112,6 +135,10 @@ class AttachmentRepository implements AttachmentRepositoryInterface
         return $attachment;
     }
 
+    /**
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $criteria
+     * @return mixed
+     */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $criteria)
     {
         $searchResults = $this->searchResultsFactory->create();
@@ -158,6 +185,11 @@ class AttachmentRepository implements AttachmentRepositoryInterface
         return $searchResults;
     }
 
+    /**
+     * @param Data\AttachmentInterface $attachment
+     * @return bool|mixed
+     * @throws CouldNotDeleteException
+     */
     public function delete(Data\AttachmentInterface $attachment)
     {
         try {
@@ -168,6 +200,12 @@ class AttachmentRepository implements AttachmentRepositoryInterface
         return true;
     }
 
+    /**
+     * @param $attachmentId
+     * @return bool|mixed
+     * @throws CouldNotDeleteException
+     * @throws NoSuchEntityException
+     */
     public function deleteById($attachmentId)
     {
         return $this->delete($this->getById($attachmentId));

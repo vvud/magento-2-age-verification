@@ -8,7 +8,10 @@ namespace Magentiz\AgeVerification\Plugin\Checkout\Model;
 
 class ShippingInformationManagement
 {
-    public $quoteRepository;
+    /**
+     * @var \Magento\Quote\Model\QuoteRepository
+     */
+    protected $quoteRepository;
 
     public function __construct(
         \Magento\Quote\Model\QuoteRepository $quoteRepository
@@ -16,6 +19,12 @@ class ShippingInformationManagement
         $this->quoteRepository = $quoteRepository;
     }
 
+    /**
+     * @param \Magento\Checkout\Model\ShippingInformationManagement $subject
+     * @param $cartId
+     * @param \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function beforeSaveAddressInformation(
         \Magento\Checkout\Model\ShippingInformationManagement $subject,
         $cartId,
@@ -26,9 +35,8 @@ class ShippingInformationManagement
         {
             return;
         }
-		
+
         $quote = $this->quoteRepository->getActive($cartId);
         $quote->setDob($extensionAttributes->getDob());
-        // $quote->setIdFile($extensionAttributes->getIdFile());
     }
 }

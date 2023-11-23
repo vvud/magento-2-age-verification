@@ -7,9 +7,9 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="sales_model_service_quote_submit_before">
-        <observer name="save_dob_to_order" instance="Magentiz\AgeVerification\Observer\SaveOrderObserver" />
+        <observer name="save_dob_to_order" instance="Magentiz\AgeVerification\Observer\SaveAvDob" />
     </event>
     <event name="checkout_submit_all_after">
-        <observer name="save_age_verification_attachment" instance="Magentiz\AgeVerification\Observer\SaveAvAttachmentAfterPlaceObserver" />
+        <observer name="save_age_verification_attachment" instance="Magentiz\AgeVerification\Observer\SaveAvAttachment" />
     </event>
 </config>

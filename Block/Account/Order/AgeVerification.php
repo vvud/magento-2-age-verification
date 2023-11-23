@@ -29,6 +29,8 @@ class AgeVerification extends \Magento\Framework\View\Element\Template
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magentiz\AgeVerification\Helper\Attachment $attachmentHelper
+     * @param \Magentiz\AgeVerification\Helper\Data $dataHelper
+     * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -43,16 +45,25 @@ class AgeVerification extends \Magento\Framework\View\Element\Template
         $this->dataHelper = $dataHelper;
     }
 
+    /**
+     * @return order
+     */
     public function getOrder()
     {
         return $this->coreRegistry->registry('current_order');
     }
 
+    /**
+     * @return bool
+     */
     public function isAgeVerificationEnabled()
     {
         return $this->dataHelper->isAgeVerificationEnabled();
     }
 
+    /**
+     * @return string
+     */
     public function getAgeVerificationConfig()
     {
         $config = $this->dataHelper->getAgeVerficationConfig($this);
@@ -60,11 +71,17 @@ class AgeVerification extends \Magento\Framework\View\Element\Template
         return $config;
     }
 
+    /**
+     * @return date
+     */
     public function getDob()
     {
         return $this->getOrder()->getDob();
     }
 
+    /**
+     * @return array
+     */
     public function getOrderAttachments()
     {
         $orderId = $this->getOrder()->getId();

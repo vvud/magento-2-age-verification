@@ -8,10 +8,14 @@ namespace Magentiz\AgeVerification\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 
-class SaveOrderObserver implements ObserverInterface
+class SaveAvDob implements ObserverInterface
 {
     const DOB = 'dob';
 
+    /**
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return $this|void
+     */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();

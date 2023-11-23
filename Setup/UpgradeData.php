@@ -49,26 +49,26 @@ class UpgradeData implements UpgradeDataInterface
         $setup->startSetup();
 
         if (version_compare($context->getVersion(), '1.0.0') < 0) {
-            // $confirmBlock = array(
-            //     'title' => 'Age Verification',
-            //     'identifier' => 'magentiz-age-verification',
-            //     'stores' => array(0),
-            //     'is_active' => 1,
-            //     'content' => 
-            //         '<fieldset class="fieldset age-verification-fieldset">
-            //             <div class="popup-logo">
-            //                 <img src="" alt="Logo" />
-            //             </div>
-            //             <p class="small">You must be older than 18 years old to purchase our products!</p>
-            //             <div class="field choice">
-            //                 <input type="checkbox" id="agree_term_condition" />
-            //                 <label for="agree_term_condition" class="label">I agree with the Terms and Conditions</label>
-            //                 <div class="agree_term_condition_error mage-error">Please confirm to continue</div>
-            //             </div>
-            //         </fieldset>'
-            // );
+            $confirmBlock = array(
+                'title' => 'Age Verification',
+                'identifier' => 'magentiz-age-verification',
+                'stores' => array(0),
+                'is_active' => 1,
+                'content' => 
+                    '<fieldset class="fieldset age-verification-fieldset">
+                        <div class="popup-logo">
+                            <img src="" alt="Logo" />
+                        </div>
+                        <p class="small">You must be older than 18 years old to purchase our products!</p>
+                        <div class="field choice">
+                            <input type="checkbox" id="agree_term_condition" />
+                            <label for="agree_term_condition" class="label">I agree with the Terms and Conditions</label>
+                            <div class="agree_term_condition_error mage-error">Please confirm to continue</div>
+                        </div>
+                    </fieldset>'
+            );
 
-            // $this->blockFactory->create()->setData($confirmBlock)->save();
+            $this->blockFactory->create()->setData($confirmBlock)->save();
         }
 
         $setup->endSetup();

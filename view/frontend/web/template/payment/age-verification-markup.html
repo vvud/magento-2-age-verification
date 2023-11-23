@@ -4,7 +4,7 @@
  * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
  */
 -->
-<div class="sp-checkout-orderattachment" data-bind="fadeVisible: isVisible">
+<div class="age-verification-container" data-bind="fadeVisible: isVisible">
     <div class="payment-option _collapsible opc-payment-additional order-attachments"
         data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
         <div class="payment-option-title field choice" data-role="title">
@@ -17,18 +17,18 @@
             <div class="info" data-bind="html: getAdditionalInfo()"></div>
             <br>
             <form class="field _required" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}, event: {change: onDobChange()}">
-                <label class="label" for="age_verification_dob"><span data-bind="i18n: 'Date of Birth'"></span></label>
+                <label class="label" for="age-verification-dob"><span data-bind="i18n: 'Date of Birth'"></span></label>
                 <div class="control datepicker-control">
                     <input class="input-text required-entry" type="text" data-bind="datepicker: true"
-                        data-bind="value: getDob()" name="dob" aria-required="true" id="age_verification_dob" readonly/>
+                        data-bind="value: getDob()" name="dob" aria-required="true" id="age-verification-dob" readonly/>
                 </div>
-                <input type="hidden" id="age_verification_dob_valid" />
+                <input type="hidden" id="age-verification-dob-valid" />
                 <div class="dob-error"></div>
             </form>
             <br>
             <div class="payment-option-inner">
                 <div class="field _required">
-                    <label class="label" for="age_verification_dob"><span data-bind="i18n: 'Identity Attach Files'"></span></label>
+                    <label class="label" for="age-verification-dob"><span data-bind="i18n: 'Identity Attach Files'"></span></label>
                     <div class="control">
                         <div class="control">
                             <input class="input" type="file" style="display: none;" data-bind="event: {change: fileUpload}"

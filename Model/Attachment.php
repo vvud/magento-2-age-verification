@@ -74,11 +74,21 @@ class Attachment extends AbstractModel implements AttachmentInt, IdentityInterfa
         $this->_init('Magentiz\AgeVerification\Model\ResourceModel\Attachment');
     }
 
+    /**
+     * @param $orderId
+     * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getOrderAttachments($orderId)
     {
         return $this->_getResource()->getOrderAttachments($orderId);
     }
 
+    /**
+     * @param $quoteId
+     * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getAttachmentsByQuote($quoteId)
     {
         return $this->_getResource()->getAttachmentsByQuote($quoteId);
@@ -174,41 +184,73 @@ class Attachment extends AbstractModel implements AttachmentInt, IdentityInterfa
         return $this->getData(self::MODIFIED_AT);
     }
 
+    /**
+     * @param $AttachmentId
+     * @return Attachment|mixed
+     */
     public function setAttachmentId($AttachmentId)
     {
         return $this->setData(self::ATTACHMENT_ID, $AttachmentId);
     }
 
+    /**
+     * @param $QuoteId
+     * @return Attachment|mixed
+     */
     public function setQuoteId($QuoteId)
     {
         return $this->setData(self::QUOTE_ID, $QuoteId);
     }
 
+    /**
+     * @param $OrderId
+     * @return Attachment|mixed
+     */
     public function setOrderId($OrderId)
     {
         return $this->setData(self::ORDER_ID, $OrderId);
     }
 
+    /**
+     * @param $Path
+     * @return Attachment|mixed
+     */
     public function setPath($Path)
     {
         return $this->setData(self::PATH, $Path);
     }
 
+    /**
+     * @param $Hash
+     * @return Attachment|mixed
+     */
     public function setHash($Hash)
     {
         return $this->setData(self::HASH, $Hash);
     }
 
+    /**
+     * @param $Type
+     * @return Attachment|mixed
+     */
     public function setType($Type)
     {
         return $this->setData(self::TYPE, $Type);
     }
 
+    /**
+     * @param $UploadedAt
+     * @return Attachment|mixed
+     */
     public function setUploadedAt($UploadedAt)
     {
         return $this->setData(self::UPLOADED_AT, $UploadedAt);
     }
 
+    /**
+     * @param $ModifiedAt
+     * @return Attachment|mixed
+     */
     public function setModifiedAt($ModifiedAt)
     {
         return $this->setData(self::MODIFIED_AT, $ModifiedAt);

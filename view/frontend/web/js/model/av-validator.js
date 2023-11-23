@@ -6,12 +6,12 @@
 define([
     'jquery',
     'Magento_Ui/js/model/messageList'
-], function ($, messageList ) {
+], function ($, messageList) {
     'use strict';
     return {
         validate: function () {
             var isValid = true;
-            if (!$('#age_verification_dob_valid').val() || !$('input[name="attachment-id"]').length) {
+            if (!$('#age-verification-dob-valid').val() || !$('input[name="attachment-id"]').length) {
                 isValid = false;
             }
             if (!isValid) {
