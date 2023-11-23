@@ -215,6 +215,7 @@ define([
                             if (result['attachment_count']) {
                                 self.files = result['attachment_count'];
                             }
+                            $('#age-verification-attachment').val('');
                             $('div.sp-attachment-row[rel="' + hash + '"]').remove();
                         }
                         self.hideRowLoader();
