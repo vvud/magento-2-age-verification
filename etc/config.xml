@@ -8,6 +8,16 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <ageverification>
+            <general>
+                <enabled>0</enabled>
+                <title>Age Verification</title>
+                <additional_information></additional_information>
+                <display_position>0</display_position>
+                <verification_type>0</verification_type>
+                <attachment_count>2</attachment_count>
+                <attachment_size>500</attachment_size>
+                <attachment_extension>jpg,jpeg,png,gif</attachment_extension>
+            </general>
             <popup>
                 <enabled>0</enabled>
                 <popup_width>auto</popup_width>
@@ -18,16 +28,6 @@
                 <agree>Enter</agree>
                 <disagree>Cancel</disagree>
             </popup>
-            <checkout>
-                <enabled>0</enabled>
-                <title>Age Verification</title>
-                <additional_information></additional_information>
-                <display_position>0</display_position>
-                <verification_type>0</verification_type>
-                <attachment_count>2</attachment_count>
-                <attachment_size>500</attachment_size>
-                <attachment_extension>jpg,jpeg,png,gif</attachment_extension>
-            </checkout>
         </ageverification>
     </default>
 </config>

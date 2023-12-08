@@ -14,13 +14,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const AV_POPUP_ENABLED = 'ageverification/popup/enabled';
     /**
-     * Configuration for "Enabled age verification in checkout module" property
+     * Configuration for "Enabled age verification in checkout" property
      */
-    const AGE_VERIFICATION_ENABLE = 'ageverification/checkout/enabled';
+    const AGE_VERIFICATION_ENABLE = 'ageverification/general/enabled';
     /**
      * Configuration for "Age verification title" property
      */
-    const AGE_VERIFICATION_TITLE = 'ageverification/checkout/title';
+    const AGE_VERIFICATION_TITLE = 'ageverification/general/title';
     /**
      * Configuration for "Age verification default title" property
      */
@@ -28,16 +28,16 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Configuration for "Verification Type" property
      */
-    const AGE_VERIFICATION_TYPE = 'ageverification/checkout/verification_type';
+    const AGE_VERIFICATION_TYPE = 'ageverification/general/verification_type';
     /**
      * Configuration for "age verification additional information" property
      */
-    const AGE_VERIFICATION_ADDITIONAL_INFORMATION = 'ageverification/checkout/additional_information';
+    const AGE_VERIFICATION_ADDITIONAL_INFORMATION = 'ageverification/general/additional_information';
 
     /**
      * Configuration for "age verification display position" property
      */
-    const AGE_VERIFICATION_DISPLAY_POSITION = 'ageverification/checkout/display_position';
+    const AGE_VERIFICATION_DISPLAY_POSITION = 'ageverification/general/display_position';
 
     /**
      * @var \Magento\Cms\Model\Template\FilterProvider

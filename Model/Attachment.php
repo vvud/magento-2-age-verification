@@ -15,16 +15,16 @@ class Attachment extends AbstractModel implements AttachmentInt, IdentityInterfa
     /**
      * XML configuration paths for "File restrictions - limit" property
      */
-    const AGE_VERIFICATION_ATTACHMENT_FILE_LIMIT = 'ageverification/checkout/attachment_count';
+    const AGE_VERIFICATION_ATTACHMENT_FILE_LIMIT = 'ageverification/general/attachment_count';
     /**
      * XML configuration paths for "File restrictions - size" property
      */
-    const AGE_VERIFICATION_ATTACHMENT_FILE_SIZE = 'ageverification/checkout/attachment_size';
+    const AGE_VERIFICATION_ATTACHMENT_FILE_SIZE = 'ageverification/general/attachment_size';
 
     /**
      * XML configuration paths for "File restrictions - Allowed extensions" property
      */
-    const AGE_VERIFICATION_ATTACHMENT_FILE_EXT = 'ageverification/checkout/attachment_extension';
+    const AGE_VERIFICATION_ATTACHMENT_FILE_EXT = 'ageverification/general/attachment_extension';
     /**
      * cache tag
      */
