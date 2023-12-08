@@ -80,13 +80,22 @@
                 <field id="attachment_count" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Attachment Limit</label>
                     <comment>Per Order</comment>
+                    <depends>
+                        <field id="verification_type" separator="|">0|1</field>
+                    </depends>
                 </field>
                 <field id="attachment_size" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Attachment Size, Kilobytes</label>
                     <comment>Per File</comment>
+                    <depends>
+                        <field id="verification_type" separator="|">0|1</field>
+                    </depends>
                 </field>
                 <field id="attachment_extension" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Attachment Allowed extensions</label>
+                    <depends>
+                        <field id="verification_type" separator="|">0|1</field>
+                    </depends>
                 </field>
             </group>
         </section>
