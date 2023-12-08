@@ -52,6 +52,47 @@ class UpgradeSchema implements UpgradeSchemaInterface
             );
         }
 
+        if (version_compare($context->getVersion(), '1.0.1') < 0) {
+            // Quote
+            $setup->getConnection()->addColumn(
+                $setup->getTable($quote),
+                'av_type',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'nullable' => true,
+                    'comment' => 'Age Verification Type'
+                ]
+            );
+            $setup->getConnection()->addColumn(
+                $setup->getTable($quote),
+                'av_number',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'nullable' => true,
+                    'comment' => 'Age Verification Number'
+                ]
+            );
+            // Sales order
+            $setup->getConnection()->addColumn(
+                $setup->getTable($orderTable),
+                'av_type',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'nullable' => true,
+                    'comment' => 'Age Verification Type'
+                ]
+            );
+            $setup->getConnection()->addColumn(
+                $setup->getTable($orderTable),
+                'av_number',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    'nullable' => true,
+                    'comment' => 'Age Verification Number'
+                ]
+            );
+        }
+
         $setup->endSetup();
     }
 }

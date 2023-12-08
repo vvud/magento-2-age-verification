@@ -73,15 +73,19 @@
                     <label>Display Position</label>
                     <source_model>Magentiz\AgeVerification\Model\Config\Source\DisplayPositionOptions</source_model>
                 </field>
-                <field id="count" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="verification_type" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Verification Type</label>
+                    <source_model>Magentiz\AgeVerification\Model\Config\Source\VerificationType</source_model>
+                </field>
+                <field id="attachment_count" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Attachment Limit</label>
                     <comment>Per Order</comment>
                 </field>
-                <field id="size" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="attachment_size" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Attachment Size, Kilobytes</label>
                     <comment>Per File</comment>
                 </field>
-                <field id="extension" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="attachment_extension" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Attachment Allowed extensions</label>
                 </field>
             </group>

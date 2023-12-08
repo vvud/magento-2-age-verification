@@ -10,6 +10,12 @@ use Magento\Framework\Option\ArrayInterface;
 
 class DisplayPositionOptions implements ArrayInterface
 {
+    const NOT_DISPLAY = '';
+    const AFTER_SHIPPING_ADDRESS = 0;
+    const AFTER_SHIPPING_METHOD = 1;
+    const BEFORE_PAYMENT_METHOD = 2;
+    const AFTER_PAYMENT_METHOD = 3;
+
     /**
      * @inheritdoc
      */
@@ -18,19 +24,23 @@ class DisplayPositionOptions implements ArrayInterface
         return [
             [
                 'label' => __('Do Not Display'),
-                'value' => ''
+                'value' => self::NOT_DISPLAY
             ],
             [
                 'label' => __('After Shipping Address'),
-                'value' => 'after-shipping-address'
+                'value' => self::AFTER_SHIPPING_ADDRESS
             ],
             [
                 'label' => __('After Shipping Methods'),
-                'value' => 'after-shipping-methods'
+                'value' => self::AFTER_SHIPPING_METHOD
+            ],
+            [
+                'label' => __('Before Payment Method'),
+                'value' => self::BEFORE_PAYMENT_METHOD
             ],
             [
                 'label' => __('After Payment Method'),
-                'value' => 'after-payment-methods'
+                'value' => self::AFTER_PAYMENT_METHOD
             ]
         ];
     }

@@ -13,40 +13,18 @@ use Magento\Framework\Model\AbstractModel;
 class Attachment extends AbstractModel implements AttachmentInt, IdentityInterface
 {
     /**
-     * XML configuration paths for "Allow file upload during checkout" property
-     */
-    const AGE_VERIFICATION_ADDITIONAL_INFORMATION = 'ageverification/checkout/additional_information';
-
-    /**
-     * XML configuration paths for "Allow file upload during checkout" property
-     */
-    const AGE_VERIFICATION_DISPLAY_POSITION = 'ageverification/checkout/display_position';
-
-    /**
      * XML configuration paths for "File restrictions - limit" property
      */
-    const AGE_VERIFICATION_ATTACHMENT_FILE_LIMIT = 'ageverification/checkout/count';
+    const AGE_VERIFICATION_ATTACHMENT_FILE_LIMIT = 'ageverification/checkout/attachment_count';
     /**
      * XML configuration paths for "File restrictions - size" property
      */
-    const AGE_VERIFICATION_ATTACHMENT_FILE_SIZE = 'ageverification/checkout/size';
+    const AGE_VERIFICATION_ATTACHMENT_FILE_SIZE = 'ageverification/checkout/attachment_size';
 
     /**
      * XML configuration paths for "File restrictions - Allowed extensions" property
      */
-    const AGE_VERIFICATION_ATTACHMENT_FILE_EXT = 'ageverification/checkout/extension';
-    /**
-     * XML configuration paths for "Enabled orderattachment module" property
-     */
-    const AGE_VERIFICATION_ENABLE = 'ageverification/checkout/enabled';
-    /**
-     * XML configuration paths for "Allow file upload during checkout" property
-     */
-    const AGE_VERIFICATION_TITLE = 'ageverification/checkout/title';
-    /**
-     * XML configuration paths for "Allow file upload during checkout" property
-     */
-    const AGE_VERIFICATION_DEFAULT_TITLE = 'Age Verification';
+    const AGE_VERIFICATION_ATTACHMENT_FILE_EXT = 'ageverification/checkout/attachment_extension';
     /**
      * cache tag
      */

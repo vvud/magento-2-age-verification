@@ -9,6 +9,7 @@ namespace Magentiz\AgeVerification\Model;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magentiz\AgeVerification\Model\Attachment;
+use Magentiz\AgeVerification\Helper\Data as AgeVerification;
 
 class AgeVerificationConfigProvider implements ConfigProviderInterface
 {
@@ -74,16 +75,18 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
     public function getConfig()
     {
         $uploadedAttachments = $this->getUploadedAttachments();
-        $attachSize = $this->getOrderAttachmentFileSize();
+        $attachSize = $this->getAttachmentFileSize();
         return [
-            'ageVerificationEnabled'    => $this->isAgeVerificationEnabled(),
+            'ageVerificationEnabled'    => $this->dataHelper->isAgeVerificationEnabled(),
             'ageVerificationTitle'      => $this->dataHelper->getTitle(),
-            'additionalInformation'     => $this->scopeConfig->getValue( Attachment::AGE_VERIFICATION_ADDITIONAL_INFORMATION, ScopeInterface::SCOPE_STORE ),
+            'additionalInformation'     => $this->scopeConfig->getValue(AgeVerification::AGE_VERIFICATION_ADDITIONAL_INFORMATION, ScopeInterface::SCOPE_STORE),
+            'verificationType'          => $this->dataHelper->getVerificationType(),
+            'saveDob'                   => $this->getDobSaveUrl(),
+            'saveIdCard'                => $this->getIdCardSaveUrl(),
             'attachments'               => $uploadedAttachments['result'],
-            'attachmentLimit'           => $this->getOrderAttachmentFileLimit(),
-            'attachmentSize'            => $this->getOrderAttachmentFileSize(),
-            'attachmentExt'             => $this->getOrderAttachmentFileExt(),
-            'bodUpdate'                 => $this->getBodUpdateUrl(),
+            'attachmentLimit'           => $this->getAttachmentFileLimit(),
+            'attachmentSize'            => $attachSize,
+            'attachmentExt'             => $this->getAttachmentFileExt(),
             'attachmentUpload'          => $this->getAttachmentUploadUrl(),
             'attachmentRemove'          => $this->getAttachmentRemoveUrl(),
             'removeItem'                => __('Remove Item'),
@@ -138,22 +141,9 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @return bool
-     */
-    private function isAgeVerificationEnabled()
-    {
-        $moduleEnabled = $this->scopeConfig->getValue(
-            Attachment::AGE_VERIFICATION_ENABLE,
-            ScopeInterface::SCOPE_STORE
-        );
-
-        return ($moduleEnabled);
-    }
-
-    /**
      * @return string
      */
-    private function getOrderAttachmentFileLimit()
+    private function getAttachmentFileLimit()
     {
         return $this->scopeConfig->getValue(
             Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_LIMIT,
@@ -164,7 +154,7 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
     /**
      * @return string
      */
-    private function getOrderAttachmentFileSize()
+    private function getAttachmentFileSize()
     {
         return $this->scopeConfig->getValue(
             Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_SIZE,
@@ -175,7 +165,7 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
     /**
      * @return string
      */
-    private function getOrderAttachmentFileExt()
+    private function getAttachmentFileExt()
     {
         return $this->scopeConfig->getValue(
             Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_EXT,
@@ -186,9 +176,17 @@ class AgeVerificationConfigProvider implements ConfigProviderInterface
     /**
      * @return string
      */
-    public function getBodUpdateUrl()
+    public function getDobSaveUrl()
     {
-        return $this->urlBuilder->getUrl('ageverification/quote/save');
+        return $this->urlBuilder->getUrl('ageverification/quote/saveDob');
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdCardSaveUrl()
+    {
+        return $this->urlBuilder->getUrl('ageverification/quote/saveIdCard');
     }
 
     /**

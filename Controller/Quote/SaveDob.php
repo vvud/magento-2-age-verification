@@ -6,7 +6,7 @@
 
 namespace Magentiz\AgeVerification\Controller\Quote;
 
-class Save implements \Magento\Framework\App\Action\HttpPostActionInterface
+class SaveDob implements \Magento\Framework\App\Action\HttpPostActionInterface
 {
     /**
      * @var \Magento\Framework\App\RequestInterface

@@ -17,21 +17,21 @@ class SaveAvAttachment implements ObserverInterface
      */
     protected $attachmentCollection;
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \Magentiz\AgeVerification\Helper\Data
      */
-    protected $logger;
+    protected $dataHelper;
 
     /**
      * SaveAvAttachment constructor.
      * @param \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection $attachmentCollection
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magentiz\AgeVerification\Helper\Data $dataHelper
      */
     public function __construct(
         \Magentiz\AgeVerification\Model\ResourceModel\Attachment\Collection $attachmentCollection,
-        \Psr\Log\LoggerInterface $logger
+        \Magentiz\AgeVerification\Helper\Data $dataHelper
     ) {
         $this->attachmentCollection = $attachmentCollection;
-        $this->logger = $logger;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -40,20 +40,22 @@ class SaveAvAttachment implements ObserverInterface
      */
     public function execute(EventObserver $observer)
     {
-        $order = $observer->getEvent()->getOrder();
-        if (!$order) {
-            return $this;
-        }
-
-        $attachments = $this->attachmentCollection
-            ->addFieldToFilter('quote_id', $order->getQuoteId())
-            ->addFieldToFilter('order_id', ['is' => new \Zend_Db_Expr('null')]);
-
-        foreach ($attachments as $attachment) {
-            try {
-                $attachment->setOrderId($order->getId())->save();
-            } catch (\Exception $e) {
-                continue;
+        if ($this->dataHelper->allowAttachment()) {
+            $order = $observer->getEvent()->getOrder();
+            if (!$order) {
+                return $this;
+            }
+    
+            $attachments = $this->attachmentCollection
+                ->addFieldToFilter('quote_id', $order->getQuoteId())
+                ->addFieldToFilter('order_id', ['is' => new \Zend_Db_Expr('null')]);
+    
+            foreach ($attachments as $attachment) {
+                try {
+                    $attachment->setOrderId($order->getId())->save();
+                } catch (\Exception $e) {
+                    continue;
+                }
             }
         }
 

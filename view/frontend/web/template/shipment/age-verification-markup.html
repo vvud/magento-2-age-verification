@@ -1,74 +1,271 @@
 <!--
 /**
- * Copyright © Open Techiz. All rights reserved.
- * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
- */
+    * Copyright © Open Techiz. All rights reserved.
+    * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+    */
 -->
-<div class="age-verification-container">
-    <div class="payment-option _collapsible opc-payment-additional order-attachments fieldset">
-        <div class="payment-option-title field choice" data-role="title">
-            <div class="step-title action action-toggle" id="block-attachments-heading" role="heading" aria-level="2"
-                data-bind="i18n: getTitle()">
-            </div>
+<div class="age-verification-container in-shipment-step">
+    <br>
+    <div class="step-title" data-role="title">
+        <div class="step-title action action-toggle" id="block-attachments-heading" role="heading" aria-level="2"
+            data-bind="i18n: getTitle()">
         </div>
-        <div class="message warning"><span data-bind="i18n: 'You need to confirm your age before purchase our products!'"></span></div>
-        <div class="info" data-bind="html: getAdditionalInfo()"></div>
-        <br>
+    </div>
+    <div class="message warning"><span data-bind="i18n: 'You need to confirm your age before purchase our products!'"></span></div>
+    <div class="info" data-bind="html: getAdditionalInfo()"></div>
 
-        <form class="field _required field-validate av-dob-field" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}, event: {change: onDobChange()}">
+    <form class="fieldset" id="aveForm">
+        <field class="field _required field-validate av-dob-field">
             <label class="label" for="age-verification-dob"><span data-bind="i18n: 'Date of Birth'"></span></label>
             <div class="control datepicker-control">
-                <input class="input-text required-entry" type="text" data-bind="datepicker: true"
-                    data-bind="value: getDob()" name="dob" aria-required="true" id="age-verification-dob"/>
+                <input class="input-text required-entry" type="text" name="dob" aria-required="true" id="age-verification-dob"
+                    data-bind="datepicker: true, value: getDob(), attr: {'data-hasrequired': $t('* Required Fields')}, event: {change: onDobChange}" />
             </div>
-            <input type="hidden" id="age-verification-dob-valid" />
+            <input type="hidden" id="age-verification-dob-valid" data-bind="value: checkDobValid()" />
             <div class="mage-error av-dob-error">
                 <span data-bind="i18n: 'This is a required field.'"></span>
             </div>
-        </form>
-        
-        <div class="field _required field-validate av-attachment-field payment-option-content">
-            <label class="label" for="age-verification-dob"><span data-bind="i18n: 'Identity Attach Files'"></span></label>
-            <div class="control">
-                <div class="control">
-                    <input class="input" type="file" style="display: none;" data-bind="event: {change: fileUpload}"
-                        id="age-verification-attachment" name="order-attachment[]" />
-                    <div class="sp-attachment-drag-area" style="cursor:pointer" data-bind="
-                            click: selectFiles,
-                            event: {
-                                dragenter: dragEnter,
-                                dragover: dragOver,
-                                drop: drop
-                            }">
-                        <h4 data-bind="i18n: 'Drag or Select your files here'"></h4>
+        </field>
+        <br>
+        <!-- ko if: allowIdCard() -->
+        <field class="field _required field-validate av-idcard-field">
+            <label class="label" for="av-id-field"><span data-bind="i18n: 'ID Number Verify'"></span></label>
+            <div class="identification-selection idcard-verification-selection">
+                <div class="register--alt-shipping">
+                    <input name="verification_type" data-bind="click: onVerificationTypeChange" type="radio" id="verification_mode_old" value="old">
+                    <label for="verification_mode_old" class="idcardSelect">
+                        <span data-bind="i18n: 'Age Verification with the'"></span> <strong data-bind="i18n: 'old'"></strong> <span data-bind="i18n: 'ID Card'"></span>
+                    </label>
+                </div>
+                <br>
+                <div class="register--alt-shipping">
+                    <input name="verification_type" data-bind="click: onVerificationTypeChange" type="radio" id="verification_mode_new" value="new">
+                    <label for="verification_mode_new" class="idcardSelect">
+                        <span data-bind="i18n: 'Age Verification with the'"></span> <strong data-bind="i18n: 'new'"></strong> <span data-bind="i18n: 'ID Card'"></span>
+                    </label>
+                </div>
+                <br>
+                <div class="register--drp-shipping">
+                    <input name="verification_type" data-bind="click: onVerificationTypeChange" type="radio" id="verification_mode_drp" value="drp">
+                    <label for="verification_mode_drp" class="idcardSelect">
+                        <span data-bind="i18n: 'Age Verification with'"></span> <strong data-bind="i18n: 'German Passport'"></strong>
+                    </label>
+                </div>
+                <br>
+                <div class="register--aht-shipping">
+                    <input name="verification_type" data-bind="click: onVerificationTypeChange" type="radio" id="verification_mode_aht" value="aht">
+                    <label for="verification_mode_aht" class="idcardSelect">
+                        <span data-bind="i18n: 'Age Verification with'"></span> <strong data-bind="i18n: 'eResidence Permit'"></strong>
+                    </label>
+                </div>
+                <br>
+                <div class="register--aut-shipping">
+                    <input name="verification_type" data-bind="click: onVerificationTypeChange" type="radio" id="verification_mode_aut" value="aut">
+                    <label for="verification_mode_aut" class="idcardSelect">
+                        <span data-bind="i18n: 'Age Verification with'"></span> <strong data-bind="i18n: 'Austrian Identity Card'"></strong>
+                    </label>
+                </div>
+                <br>
+                <div class="register--pap-shipping">
+                    <input name="verification_type" data-bind="click: onVerificationTypeChange" type="radio" id="verification_mode_pap" value="pap">
+                    <label for="verification_mode_pap" class="idcardSelect">
+                        <span data-bind="i18n: 'Age Verification with'"></span> <strong data-bind="i18n: 'International Passport'"></strong>
+                    </label>
+                </div>
+                <br>
+                <div class="register--idc-shipping">
+                    <input name="verification_type" data-bind="click: onVerificationTypeChange" type="radio" id="verification_mode_idc" value="idc">
+                    <label for="verification_mode_idc" class="idcardSelect">
+                        <span data-bind="i18n: 'Age Verification with'"></span> <strong data-bind="i18n: 'International Identity Card'"></strong>
+                    </label>
+                </div>
+                <br>
+                <div class="register--alt-shipping">
+                    <input name="verification_type" data-bind="click: onVerificationTypeChange" type="radio" id="verification_mode_schufa" value="schufa">
+                    <label for="verification_mode_schufa" class="idcardSelect">
+                        <span data-bind="i18n: 'Age Verification via Schufa connection'"></span> <strong data-bind="i18n: 'No credit check'"></strong>
+                    </label>
+                </div>
+            </div>
+            <br>
+            <div class="mage-error idcard_empty_error" id="idcard_idcard_empty">
+                <span data-bind="i18n: 'This is a required field.'"></span>
+            </div>
+            <div id="verification_mode_old_container" class="idcard-verification-item">
+                <div class="idcard-input">
+                    <input name="idcard_old_1" type="text" placeholder="12200001297D" id="idcard_old_1" size="11" maxlength="11" style="width:125px;" class="idcardInput">
+                    <input name="idcard_old_2" type="text" placeholder="6408125" id="idcard_old_2" size="7" maxlength="7" style="width:90px;" class="idcardInput">
+                    <input name="idcard_old_3" type="text" placeholder="1710319" id="idcard_old_3" size="7" maxlength="7" style="width:90px;" class="idcardInput">
+                    <input name="idcard_old_4" type="text" placeholder="8" id="idcard_old_4" size="1" maxlength="1" style="width:40px;text-align: center" class="idcardInput">
+                </div>
+                <div class="mage-error idcard_old_1_error idcard_old_2_error idcard_old_3_error idcard_old_4_error inputError">
+                    <span data-bind="i18n: 'Please check your input.'"></span>
+                </div>
+                <div class="idcard-image-sample">
+                    <img data-bind="attr: { src: require.toUrl('Magentiz_AgeVerification/images/mustermann_pa_alt.jpg') }" />
+                </div>
+                <br>
+            </div>
+            <div id="verification_mode_new_container" class="idcard-verification-item">
+                <div class="idcard-input">
+                    <input name="idcard_new_1" type="text" placeholder="L01X00T471" id="idcard_new_1" size="10" maxlength="10" style="width:125px;" class="idcardInput">
+                    <input name="idcard_new_2" type="text" placeholder="8308126" id="idcard_new_2" size="7" maxlength="7" style="width:90px;" class="idcardInput">
+                    <input name="idcard_new_3" type="text" placeholder="3108011D" id="idcard_new_3" size="8" maxlength="8" style="width:96px;" class="idcardInput">
+                    <input name="idcard_new_4" type="text" placeholder="7" id="idcard_new_4" size="1" maxlength="1" style="width:40px;" class="idcardInput">
+                </div>
+                <div class="mage-error idcard_new_1_error idcard_new_2_error idcard_new_3_error idcard_new_4_error inputError">
+                    <span data-bind="i18n: 'Please check your input.'"></span>
+                </div>
+                <div class="idcard-image-sample">
+                    <img data-bind="attr: { src: require.toUrl('Magentiz_AgeVerification/images/mustermann_pa_neu.jpg') }" />
+                </div>
+                <br>
+            </div>
+            <div id="verification_mode_aht_container" class="idcard-verification-item">
+                <div class="idcard-input">
+                    <input name="idcard_aht_1" type="text" placeholder="Y701001V17" id="idcard_aht_1" size="10" maxlength="10" style="width:125px;" class="idcardInput">
+                    <input name="idcard_aht_2" type="text" placeholder="6305213F1203314TUR" id="idcard_aht_2" size="18" maxlength="18" style="width:195px;" class="idcardInput">
+                    <input name="idcard_aht_3" type="text" placeholder="6" id="idcard_aht_3" size="1" maxlength="1" style="width:40px;" class="idcardInput">
+                </div>
+                <div class="mage-error idcard_aht_1_error idcard_aht_2_error idcard_aht_3_error inputError">
+                    <span data-bind="i18n: 'Please check your input.'"></span>
+                </div>
+                <div class="idcard-image-sample">
+                    <img data-bind="attr: { src: require.toUrl('Magentiz_AgeVerification/images/mustermann_aufenthaltstitel.jpg') }" />
+                </div>
+                <br>
+            </div>
+            <div id="verification_mode_drp_container" class="idcard-verification-item">
+                <div class="idcard-input">
+                    <input name="idcard_drp_1" type="text" placeholder="C01X00T478D" id="idcard_drp_1" size="10" maxlength="11" style="width:125px;" class="idcardInput">
+                    <input name="idcard_drp_2" type="text" placeholder="8308126F3012316" id="idcard_drp_2" size="15" maxlength="15" style="width:158px;" class="idcardInput">
+                    <input name="idcard_drp_3" type="text" placeholder="4" id="idcard_drp_3" size="1" maxlength="1" style="width:40px;" class="idcardInput">
+                </div>
+                <div class="mage-error idcard_drp_1_error idcard_drp_2_error idcard_drp_3_error inputError">
+                    <span data-bind="i18n: 'Please check your input.'"></span>
+                </div>
+                <div class="idcard-image-sample">
+                    <img data-bind="attr: { src: require.toUrl('Magentiz_AgeVerification/images/mustermann_reisepass.jpg') }" />
+                </div>
+                <br>
+            </div>
+            <div id="verification_mode_aut_container" class="idcard-verification-item">
+                <div class="idcard-input">
+                    <input name="idcard_aut_1" type="text" placeholder="X0001001" id="idcard_aut_1" size="8" maxlength="8" style="width:100px;" class="idcardInput">
+                    <input name="idcard_aut_2" type="text" placeholder="7" id="idcard_aut_2" size="1" maxlength="1" style="width:36px;" class="idcardInput">
+                    <input name="idcard_aut_3" type="text" placeholder="8112314F1912319" id="idcard_aut_3" size="15" maxlength="15" style="display:inline;width:158px;" class="idcardInput">
+                    <input name="idcard_aut_4" type="text" placeholder="8" id="idcard_aut_4" size="1" maxlength="1" style="width:36px;" class="idcardInput">
+                </div>
+                <div class="mage-error idcard_aut_1_error idcard_aut_2_error idcard_aut_3_error idcard_aut_4_error inputError">
+                    <span data-bind="i18n: 'Please check your input.'"></span>
+                </div>
+                <div class="idcard-image-sample">
+                    <img data-bind="attr: { src: require.toUrl('Magentiz_AgeVerification/images/mustermann_austria.jpg') }" />
+                </div>
+                <br>
+            </div>
+            <div id="verification_mode_pap_container" class="idcard-verification-item">
+                <p>
+                    <span data-bind="i18n: 'All international passports worldwide except Germany.'"></span>
+                    <small>
+                        Schweden, Finnland, Norwegen, England, Irland, Island, Dänemark, Holland, Belgien, Luxemburg, Frankreich, Spanien, Portugal, Schweiz, Italien, Österreich, Balkan-Länder,
+                        Griechenland, Türkei, Rumänian, Ungarn, Tschechien, Polen, Lettland, Estland, Marokko Tunesien, Lybien, Syrien, Ägypten, Saudi-Arabien, Süd-Afrika, Brasilien, Chile, USA usw.
+                    </small>
+                </p>
+                <div class="idcard-input">
+                    <input name="idcard_pap_1" type="text" placeholder="0070070071HRV" id="idcard_pap_1" size="13" maxlength="13" style="margin-right:5px;width:145px;" class="idcardInput">
+                    <input name="idcard_pap_2" type="text" placeholder="8212258F1407019" id="idcard_pap_2" size="15" maxlength="15" style="margin-right:5px;width:170px;" class="idcardInput">
+                    <input name="idcard_pap_3" type="text" placeholder="6" id="idcard_pap_3" size="1" maxlength="1" style="margin-right:5px;width:70px;" class="idcardInput">
+                </div>
+                <div class="mage-error idcard_pap_1_error idcard_pap_2_error idcard_pap_3_error inputError">
+                    <span data-bind="i18n: 'Please check your input.'"></span>
+                </div>
+                <div class="idcard-image-sample">
+                    <img data-bind="attr: { src: require.toUrl('Magentiz_AgeVerification/images/internationaler_reisepass_122022.jpg') }" />
+                </div>
+                <br>
+            </div>
+            <div id="verification_mode_idc_container" class="idcard-verification-item">
+                <p>
+                    <span data-bind="i18n: 'Identity document for Europe or worldwide in ID3 format except Germany.'"></span>
+                    <small>
+                        Schweden, Finnland, Norwegen, England, Irland, Island, Dänemark, Holland, Belgien, Luxemburg, Frankreich, Spanien, Portugal, Schweiz, Italien, Österreich, Balkan-Länder,
+                        Griechenland, Türkei, Rumänian, Ungarn, Tschechien, Polen, Lettland, Estland, Marokko Tunesien, Lybien, Syrien, Ägypten, Saudi-Arabien, Süd-Afrika, Brasilien, Chile usw.
+                    </small>
+                </p>
+                <div class="idcard-input">
+                    <input name="idcard_idc_1" type="text" placeholder="000000XX<0" id="idcard_idc_1" size="10" maxlength="10" style="margin-right:5px;width:125px;" class="idcardInput">
+                    <input name="idcard_idc_2" type="text" placeholder="7906307F2806309HUN" id="idcard_idc_2" size="18" maxlength="18" style="margin-right:5px;width:195px;" class="idcardInput">
+                    <input name="idcard_idc_3" type="text" placeholder="2" id="idcard_idc_3" size="1" maxlength="1" style="width:60px;" class="idcardInput">
+                </div>
+                <div class="mage-error idcard_idc_1_error idcard_idc_2_error idcard_idc_3_error inputError">
+                    <span data-bind="i18n: 'Please check your input.'"></span>
+                </div>
+                <div class="idcard-image-sample">
+                    <img data-bind="attr: { src: require.toUrl('Magentiz_AgeVerification/images/internationaler_ausweis.jpg') }" />
+                </div>
+            </div>
+            <div id="verification_mode_schufa_container" class="idcard-verification-item">
+                <div class="register--alt-shipping">
+                    <input class="idcardInput" name="schufa_terms" type="checkbox" id="schufa_terms" value="1">
+                    <label for="schufa_terms">
+                        <span data-bind="i18n: 'I agree that my personal data will be transmitted to SCHUFA (SCHUFA Holding AG, Kormoranweg 5, 65201 Wiesbaden) for the purpose of identity verification and that SCHUFA will then determine the degree of correspondence between the personal data stored by it and the personal data I have provided in percentage values and If necessary, a reference to an ID-based identification check carried out at SCHUFA or another business partner will be sent back to Intrade Concepts GmbH. Intrade Concepts GmbH can therefore use the transmitted match rates to determine whether a person is stored in the SCHUFA database at the address I have provided.There will be no further data exchange or transmission of different addresses or my data will be stored in the SCHUFA database instead.For reasons of proof, only the fact that the address was verified is stored at SCHUFA.'"></span>
+                    </label>
+                    <div class="mage-error schufa_error inputError">
+                        <span data-bind="i18n: 'Please accept SCHUFA condition.'"></span>
                     </div>
-                    <div class="attachment-container" data-bind="foreach:attachmentList">
-                        <div data-bind="attr: { rel: hash, class:'sp-attachment-row attach-'+hash}">
-                            <div class="sp-attachment-row-content">
-                                <div class="order-attachment-preview">
-                                    <img class="thumbnail" data-bind="attr: { src: url}">
-                                    <div class="attachment-file">
-                                        <div class="filename" data-bind="text: path"></div>
-                                    </div>
+                </div>
+            </div>
+            <div class="mage-error av-idcard-error">
+                <span data-bind="i18n: 'Please check ID Number information again.'"></span>
+            </div>
+        </field>
+        <!-- /ko -->
+    </form>
+
+    <!-- ko if: allowUpload() -->
+    <div class="field _required field-validate av-attachment-field payment-option-content">
+        <label class="label" for="age-verification-dob"><span data-bind="i18n: 'Identity Attach Files'"></span></label>
+        <div class="control">
+            <div class="control">
+                <input class="input" type="file" style="display: none;" data-bind="event: {change: fileUpload}"
+                    id="age-verification-attachment" name="order-attachment[]" />
+                <div class="sp-attachment-drag-area" style="cursor:pointer" data-bind="
+                        click: selectFiles,
+                        event: {
+                            dragenter: dragEnter,
+                            dragover: dragOver,
+                            drop: drop
+                        }">
+                    <h4 data-bind="i18n: 'Drag or Select your files here'"></h4>
+                </div>
+                <div class="attachment-container" data-bind="foreach:attachmentList">
+                    <div data-bind="attr: { rel: hash, class:'sp-attachment-row attach-'+hash}">
+                        <div class="sp-attachment-row-content">
+                            <div class="order-attachment-preview">
+                                <img class="thumbnail" data-bind="attr: { src: url}">
+                                <div class="attachment-file">
+                                    <div class="filename" data-bind="text: path"></div>
                                 </div>
-                                <div class="order-attachment-content">
-                                    <a id="sp-attachment-remove2" class="sp-attachment-remove" title="Remove Item"
-                                        data-bind="click: $parent.deleteFile.bind($parent,attachment_id,hash)"
-                                        href="#"></a>
-                                    <input type="hidden"
-                                        data-bind="attr: { value: attachment_id, class: attachment_class}"
-                                        name="attachment-id">
-                                    <input type="hidden" name="attachment-hash" 
-                                        data-bind="attr: { value: hash, class: hash_class}">
-                                </div>
+                            </div>
+                            <div class="order-attachment-content">
+                                <a id="sp-attachment-remove2" class="sp-attachment-remove" title="Remove Item"
+                                    data-bind="click: $parent.deleteFile.bind($parent,attachment_id,hash)"
+                                    href="#"></a>
+                                <input type="hidden"
+                                    data-bind="attr: { value: attachment_id, class: attachment_class}"
+                                    name="attachment-id">
+                                <input type="hidden" name="attachment-hash" 
+                                    data-bind="attr: { value: hash, class: hash_class}">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mage-error">
-                    <span data-bind="i18n: 'This is a required field.'"></span>
-                </div>
+            </div>
+            <div class="mage-error">
+                <span data-bind="i18n: 'This is a required field.'"></span>
             </div>
         </div>
     </div>
+    <!-- /ko -->
 </div>

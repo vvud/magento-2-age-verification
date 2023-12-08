@@ -148,6 +148,30 @@
             display: none;
         }
     }
+
+    // Age Verification Section
+    .age-verification-container {
+        .idcard-verification-item {
+            display: none;
+            &.active {
+                display: block;
+            }
+        }
+        .idcardInput {
+            border-color: rgba(0,0,0,.2) !important;
+            text-align: center;
+            &::placeholder {
+                color: rgba(0,0,0,.2) !important;
+            }
+        }
+        .idcard-image-sample {
+            margin-top: 20px;
+            img {
+                max-width: 300px;
+                width: 100%;
+            }
+        }
+    }
 }
 
 @media only screen and (min-width:768px) {

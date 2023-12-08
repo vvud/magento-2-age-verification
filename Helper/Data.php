@@ -8,10 +8,36 @@ namespace Magentiz\AgeVerification\Helper;
 
 use Magento\Store\Model\ScopeInterface;
 use Magentiz\AgeVerification\Model\Attachment;
+use Magentiz\AgeVerification\Model\Config\Source\VerificationType;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const AGE_VERIFICATION_ENABLED = 'ageverification/general/enabled';
+    const AV_POPUP_ENABLED = 'ageverification/popup/enabled';
+    /**
+     * Configuration for "Enabled age verification in checkout module" property
+     */
+    const AGE_VERIFICATION_ENABLE = 'ageverification/checkout/enabled';
+    /**
+     * Configuration for "Age verification title" property
+     */
+    const AGE_VERIFICATION_TITLE = 'ageverification/checkout/title';
+    /**
+     * Configuration for "Age verification default title" property
+     */
+    const AGE_VERIFICATION_DEFAULT_TITLE = 'Age Verification';
+    /**
+     * Configuration for "Verification Type" property
+     */
+    const AGE_VERIFICATION_TYPE = 'ageverification/checkout/verification_type';
+    /**
+     * Configuration for "age verification additional information" property
+     */
+    const AGE_VERIFICATION_ADDITIONAL_INFORMATION = 'ageverification/checkout/additional_information';
+
+    /**
+     * Configuration for "age verification display position" property
+     */
+    const AGE_VERIFICATION_DISPLAY_POSITION = 'ageverification/checkout/display_position';
 
     /**
      * @var \Magento\Cms\Model\Template\FilterProvider
@@ -64,11 +90,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return string|null
      */
-    public function isEnabled()
+    public function isPopupEnabled()
     {
-        return $this->scopeConfig->getValue(
-            self::AGE_VERIFICATION_ENABLED, ScopeInterface::SCOPE_STORE
-        );
+        return $this->scopeConfig->getValue(self::AV_POPUP_ENABLED, ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -78,8 +102,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDelayTime()
     {
-        $delay = $this->scopeConfig->getValue('ageverification/general/cookie_interval',
-            ScopeInterface::SCOPE_STORE);
+        $delay = $this->scopeConfig->getValue('ageverification/general/cookie_interval', ScopeInterface::SCOPE_STORE);
 
         $delayHours = $delay/1440;
         return $delayHours;
@@ -92,8 +115,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getCookieExpire()
     {
-        $Cookie = $this->scopeConfig->getValue('ageverification/general/cookie_interval',
-            ScopeInterface::SCOPE_STORE);
+        $Cookie = $this->scopeConfig->getValue('ageverification/general/cookie_interval', ScopeInterface::SCOPE_STORE);
 
        $cookieHours = $Cookie/24;
        return $cookieHours;
@@ -163,8 +185,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getHeight()
     {
-        $height = $this->scopeConfig->getValue('ageverification/general/popup_height',
-            ScopeInterface::SCOPE_STORE);
+        $height = $this->scopeConfig->getValue('ageverification/general/popup_height', ScopeInterface::SCOPE_STORE);
         if ($height == 'auto') {
             return $height;
         } else {
@@ -179,8 +200,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getWidth()
     {
-        $width = $this->scopeConfig->getValue('ageverification/general/popup_width',
-            ScopeInterface::SCOPE_STORE);
+        $width = $this->scopeConfig->getValue('ageverification/general/popup_width', ScopeInterface::SCOPE_STORE);
         if ($width == 'auto') {
             return $width;
         } else {
@@ -195,8 +215,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getAgree()
     {
-        $agree = $this->scopeConfig->getValue('ageverification/general/agree',
-            ScopeInterface::SCOPE_STORE);
+        $agree = $this->scopeConfig->getValue('ageverification/general/agree', ScopeInterface::SCOPE_STORE);
 
         return $agree;
     }
@@ -208,8 +227,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDisagree()
     {
-        $disagree = $this->scopeConfig->getValue('ageverification/general/disagree',
-            ScopeInterface::SCOPE_STORE);
+        $disagree = $this->scopeConfig->getValue('ageverification/general/disagree', ScopeInterface::SCOPE_STORE);
 
         return $disagree;
     }
@@ -221,23 +239,65 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getTitle()
     {
         $titleValue = $this->scopeConfig->getValue(
-            \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_TITLE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            self::AGE_VERIFICATION_TITLE,
+            ScopeInterface::SCOPE_STORE
         );
 
-        return (trim($titleValue))?$titleValue:\Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_DEFAULT_TITLE;
+        $title = (trim($titleValue))?$titleValue:self::AGE_VERIFICATION_DEFAULT_TITLE;
+        return __($title);
     }
     
     /**
-     * Get config for order attachments enabled
+     * Get config for age verification in checkout enabled
      * @return boolean
      */
     public function isAgeVerificationEnabled()
     {
-        return (bool)$this->scopeConfig->getValue(
-            \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_ENABLE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
+        return (bool)$this->scopeConfig->getValue(self::AGE_VERIFICATION_ENABLE, ScopeInterface::SCOPE_STORE);
+    }
+    
+    /**
+     * Get config for age verification in checkout enabled
+     * @return boolean
+     */
+    public function getDisplayPosition()
+    {
+        return $this->scopeConfig->getValue(self::AGE_VERIFICATION_DISPLAY_POSITION, ScopeInterface::SCOPE_STORE);
+    }
+    
+    /**
+     * Get config for verification type
+     * @return verification type
+     */
+    public function getVerificationType()
+    {
+        return $this->scopeConfig->getValue(self::AGE_VERIFICATION_TYPE, ScopeInterface::SCOPE_STORE);
+    }
+    
+    /**
+     * Check if verification use attachment upload or not
+     * @return boolean
+     */
+    public function allowAttachment()
+    {
+        $verificationType = $this->getVerificationType();
+        if ($verificationType == VerificationType::ALL || $verificationType == VerificationType::ATTACHMENT_UPLOAD) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Check if verification use id card or not
+     * @return boolean
+     */
+    public function allowIdCard()
+    {
+        $verificationType = $this->getVerificationType();
+        if ($verificationType == VerificationType::ALL || $verificationType == VerificationType::ID_CARD) {
+            return true;
+        }
+        return false;
     }
     
     /**
@@ -248,10 +308,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getAgeVerficationConfig($block)
     {
         $attachments = $this->attachmentCollection;
-        $attachSize = $this->scopeConfig->getValue(
-            \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_SIZE,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
+        $attachSize = $this->scopeConfig->getValue(Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_SIZE, ScopeInterface::SCOPE_STORE);
 
         if ($block->getOrder()->getId()) {
             $attachments->addFieldToFilter('quote_id', ['is' => new \Zend_Db_Expr('null')]);
@@ -259,28 +316,23 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         $config = [
-            'dob' => $block->getDob(),
-            'attachments' => $block->getOrderAttachments(),
-            'attachmentLimit' => $this->scopeConfig->getValue(
-                \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_LIMIT,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            ),
-            'attachmentSize' => $attachSize,
-            'attachmentExt' => $this->scopeConfig->getValue(
-                \Magentiz\AgeVerification\Model\Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_EXT,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            ),
-            'attachmentUpload' => $block->getUploadUrl(),
-            'attachmentRemove' => $block->getRemoveUrl(),
-            'ageVerificationTitle' =>  $this->getTitle(),
-            'additionalInformation' => $this->scopeConfig->getValue( Attachment::AGE_VERIFICATION_ADDITIONAL_INFORMATION, ScopeInterface::SCOPE_STORE ),
-            'removeItem' => __('Remove Item'),
-            'attachmentInvalidExt' => __('Invalid File Type'),
-            'attachmentInvalidSize' => __('Size of the file is greather than allowed') . '(' . $attachSize . ' KB)',
+            'dob'                    => $block->getDob(),
+            'verificationType'       => $this->getVerificationType(),
+            'attachments'            => $block->getOrderAttachments(),
+            'attachmentLimit'        => $this->scopeConfig->getValue(Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_LIMIT, ScopeInterface::SCOPE_STORE),
+            'attachmentSize'         => $attachSize,
+            'attachmentExt'          => $this->scopeConfig->getValue(Attachment::AGE_VERIFICATION_ATTACHMENT_FILE_EXT, ScopeInterface::SCOPE_STORE),
+            'attachmentUpload'       => $block->getUploadUrl(),
+            'attachmentRemove'       => $block->getRemoveUrl(),
+            'ageVerificationTitle'   =>  $this->getTitle(),
+            'additionalInformation'  => $this->scopeConfig->getValue(self::AGE_VERIFICATION_ADDITIONAL_INFORMATION, ScopeInterface::SCOPE_STORE),
+            'removeItem'             => __('Remove Item'),
+            'attachmentInvalidExt'   => __('Invalid File Type'),
+            'attachmentInvalidSize'  => __('Size of the file is greather than allowed') . '(' . $attachSize . ' KB)',
             'attachmentInvalidLimit' => __('You have reached the limit of files'),
-            'attachment_class' => 'sp-attachment-id',
-            'hash_class' => 'sp-attachment-hash',
-            'totalCount' => $attachments->getSize()
+            'attachment_class'       => 'sp-attachment-id',
+            'hash_class'             => 'sp-attachment-hash',
+            'totalCount'             => $attachments->getSize()
         ];
 
         return $this->jsonEncoder->encode($config);

@@ -29,16 +29,6 @@ class Popup extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * Check if enabled
-     *
-     * @return string|null
-     */
-    public function isEnabled()
-    {
-        return $this->helper->isEnabled();
-    }
-
-    /**
      * Get Delay time
      *
      * @return string|null

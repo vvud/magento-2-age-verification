@@ -6,16 +6,11 @@
 
 namespace Magentiz\AgeVerification\Block\Checkout;
 
-use Magento\Store\Model\ScopeInterface;
-use Magentiz\AgeVerification\Model\Attachment as AgeVerification;
+use Magentiz\AgeVerification\Model\Config\Source\DisplayPositionOptions as DisplayPosition;
 
 
 class LayoutProcessor implements \Magento\Checkout\Block\Checkout\LayoutProcessorInterface
 {
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    protected $scopeConfig;
 
     /**
      * @var CustomerSession
@@ -30,17 +25,13 @@ class LayoutProcessor implements \Magento\Checkout\Block\Checkout\LayoutProcesso
     /**
      * LayoutProcessor constructor.
      *
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magentiz\AgeVerification\Helper\Data $dataHelper
      */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Customer\Model\Session $customerSession,
         \Magentiz\AgeVerification\Helper\Data $dataHelper
-
     ) {
-        $this->scopeConfig = $scopeConfig;
         $this->customerSession = $customerSession;
         $this->dataHelper = $dataHelper;
     }
@@ -56,16 +47,23 @@ class LayoutProcessor implements \Magento\Checkout\Block\Checkout\LayoutProcesso
     public function process($jsLayout)
     {
         if ($this->dataHelper->isAgeVerificationEnabled()) {
-            switch ($this->scopeConfig->getValue(AgeVerification::AGE_VERIFICATION_DISPLAY_POSITION, ScopeInterface::SCOPE_STORE)){
-                case 'after-shipping-address':
+            switch ($this->dataHelper->getDisplayPosition()){
+                case DisplayPosition::NOT_DISPLAY:
+                    break;
+                case DisplayPosition::AFTER_SHIPPING_ADDRESS:
                     $this->addToAfterShippingAddress($jsLayout);
                     break;
-                case 'after-shipping-methods':
+                case DisplayPosition::AFTER_SHIPPING_METHOD:
                     $this->addToAfterShippingMethods($jsLayout);
                     break;
-                case 'after-payment-methods':
+                case DisplayPosition::BEFORE_PAYMENT_METHOD:
+                    $this->addToBeforePaymentMethods($jsLayout);
+                        break;
+                case DisplayPosition::AFTER_PAYMENT_METHOD:
                     $this->addToAfterPaymentMethods($jsLayout);
                         break;
+                default:
+                    break;
             }
 
             $jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']
@@ -169,6 +167,27 @@ class LayoutProcessor implements \Magento\Checkout\Block\Checkout\LayoutProcesso
             ];
 
             $this->addValidator($jsLayout);
+        }
+
+        return $jsLayout;
+    }
+
+    /**
+     * @param $jsLayout
+     * @return $jsLayout
+     */
+    protected function addToBeforePaymentMethods(&$jsLayout)
+    {
+        if (isset($jsLayout['components']['checkout']['children']['steps']['children']['billing-step']
+                ['children']['payment']['children']['beforeMethods']['children'])
+        ) {
+            $fields = &$jsLayout['components']['checkout']['children']['steps']['children']['billing-step']
+                    ['children']['payment']['children']['beforeMethods']['children'];
+
+            $fields['age-verification-after-payment-methods'] =
+            [
+                'component' => 'Magentiz_AgeVerification/js/view/payment/payment-age-verification'
+            ];
         }
 
         return $jsLayout;

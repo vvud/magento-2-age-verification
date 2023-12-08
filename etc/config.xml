@@ -22,10 +22,11 @@
                 <enabled>0</enabled>
                 <title>Age Verification</title>
                 <additional_information></additional_information>
-                <display_position>after-shipping-address</display_position>
-                <count>2</count>
-                <size>500</size>
-                <extension>jpg,jpeg,png,gif</extension>
+                <display_position>0</display_position>
+                <verification_type>0</verification_type>
+                <attachment_count>2</attachment_count>
+                <attachment_size>500</attachment_size>
+                <attachment_extension>jpg,jpeg,png,gif</attachment_extension>
             </checkout>
         </ageverification>
     </default>

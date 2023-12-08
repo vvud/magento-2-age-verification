@@ -10,6 +10,7 @@ define([
     'mage/calendar'
 ], function ($, ko, Component) {
         'use strict';
+        const default_dob = '0000-00-00';
         return Component.extend({
             defaults: {
                 template: 'Magentiz_AgeVerification/payment/age-verification-markup'
@@ -20,23 +21,25 @@ define([
             initialize: function () {
                 this._super();
                 var self = this;
-                var quote = window.checkoutConfig.quoteData;
-                this.ageVerificationTitle = window.checkoutConfig.ageVerificationTitle;
-                this.additionalInfo = window.checkoutConfig.additionalInformation;  
+                var checkoutConfig = window.checkoutConfig;
+                var quote = checkoutConfig.quoteData;
+                this.ageVerificationTitle = checkoutConfig.ageVerificationTitle;
+                this.additionalInfo = checkoutConfig.additionalInformation;  
                 this.dob = quote.dob;
-                this.allowedExtensions = window.checkoutConfig.attachmentExt;
-                this.maxFileSize = window.checkoutConfig.attachmentSize;
-                this.removeItem = window.checkoutConfig.removeItem;
-                this.maxFileLimit = window.checkoutConfig.attachmentLimit;
-                this.invalidExtError = window.checkoutConfig.attachmentInvalidExt;
-                this.invalidSizeError = window.checkoutConfig.attachmentInvalidSize;
-                this.invalidLimitError = window.checkoutConfig.attachmentInvalidLimit;
-                this.bodUpdateUrl = window.checkoutConfig.bodUpdate;
-                this.uploadUrl = window.checkoutConfig.attachmentUpload;
-                this.removeUrl = window.checkoutConfig.attachmentRemove;
-                this.attachments = window.checkoutConfig.attachments;              
+                this.verificationType = checkoutConfig.verificationType;
+                this.allowedExtensions = checkoutConfig.attachmentExt;
+                this.maxFileSize = checkoutConfig.attachmentSize;
+                this.removeItem = checkoutConfig.removeItem;
+                this.maxFileLimit = checkoutConfig.attachmentLimit;
+                this.invalidExtError = checkoutConfig.attachmentInvalidExt;
+                this.invalidSizeError = checkoutConfig.attachmentInvalidSize;
+                this.invalidLimitError = checkoutConfig.attachmentInvalidLimit;
+                this.saveDobUrl = checkoutConfig.saveDob;
+                this.uploadUrl = checkoutConfig.attachmentUpload;
+                this.removeUrl = checkoutConfig.attachmentRemove;
+                this.attachments = checkoutConfig.attachments;
                 this.attachmentList(this.attachments);
-                this.files = window.checkoutConfig.totalCount;
+                this.files = checkoutConfig.totalCount;
 
                 ko.bindingHandlers.datepicker = {
                     init: function (element, valueAccessor, allBindingsAccessor) {
@@ -110,7 +113,23 @@ define([
              * Get Dob data
              */
             getDob: function() {
-                return this.dob;
+                var dob = '';
+                if (this.dob != default_dob) {
+                    dob = this.dob;
+                }
+                return dob;
+            },
+
+            /**
+             * Return value for check dob valid
+             */
+            checkDobValid: function() {
+                var isValid = '';
+                var dob = this.getDob();
+                if (dob) {
+                    isValid = '1';
+                }
+                return isValid;
             },
 
             /**
@@ -125,6 +144,7 @@ define([
              */
             saveDob: function() {
                 if ($('#age-verification-dob').val()) {
+                    $('.av-dob-field').removeClass('error');
                     var result = true;
                     var formData = new FormData(), self = this;
                     formData.append('dob', $('#age-verification-dob').val());
@@ -132,17 +152,17 @@ define([
                         formData.append('form_key', window.FORM_KEY);
                     }
                     $.ajax({
-                        url: this.bodUpdateUrl,
+                        url: this.saveDobUrl,
                         type: 'POST',
                         data: formData,
                         success: function(res) {
                             if (res.success) {
-                                $('.dob-error').slideUp();
                                 $('#age-verification-dob-valid').val('1');
                                 result = true;
                             } else {
                                 $('#age-verification-dob-valid').val('');
-                                $('.dob-error').text($.mage.__(res.error)).slideDown();
+                                $('.av-dob-error').text($.mage.__(res.error));
+                                $('.av-dob-field').addClass('error');
                                 result = false;
                             }
                         },
@@ -158,6 +178,64 @@ define([
     
                     return result;
                 }
+            },
+
+            /**
+             * Check if validate use Id Card or not
+             */
+            allowIdCard: function() {
+                if (this.verificationType == '0' || this.verificationType == '2') {
+                    return true;
+                }
+                return false;
+            },
+            
+            /**
+             * Show verification type main content
+             */
+            onVerificationTypeChange: function(data, event) {
+                var id = event.currentTarget.id;
+                $('.idcard_empty_error').hide();
+                $('.av-idcard-error').hide();
+                $('.idcardInput, #schufa_terms').prop('required', false);
+                $('.fraspyIdentificationSelectRight').hide();
+                if (id == 'verification_mode_old') {
+                    $('#idcard_old_1, #idcard_old_2, #idcard_old_3, #idcard_old_4').prop('required', true);
+                    $('.idcard-verification-item').removeClass('active');
+                } else if (id == 'verification_mode_new') {
+                    $('#idcard_new_1, #idcard_new_2, #idcard_new_3, #idcard_new_4').prop('required', true);
+                    $('.idcard-verification-item').removeClass('active');
+                } else if (id == 'verification_mode_aht') {
+                    $('#idcard_aht_1, #idcard_aht_2, #idcard_aht_3').prop('required', true);
+                    $('.idcard-verification-item').removeClass('active');
+                } else if (id == 'verification_mode_drp') {
+                    $('#idcard_drp_1, #idcard_drp_2, #idcard_drp_3').prop('required', true);
+                    $('.idcard-verification-item').removeClass('active');
+                } else if (id == 'verification_mode_aut') {
+                    $('#idcard_aut_1, #idcard_aut_2, #idcard_aut_3, #idcard_aut_4').prop('required', true);
+                    $('.idcard-verification-item').removeClass('active');
+                } else if (id == 'verification_mode_pap') {
+                    $('#idcard_pap_1, #idcard_pap_2, #idcard_pap_3').prop('required', true);
+                    $('.idcard-verification-item').removeClass('active');
+                } else if (id == 'verification_mode_idc') {
+                    $('#idcard_idc_1, #idcard_idc_2, #idcard_idc_3').prop('required', true);
+                    $('.idcard-verification-item').removeClass('active');
+                } else if (id == 'verification_mode_schufa') {
+                    $('#schufa_terms').prop('required', true);
+                    $('.idcard-verification-item').removeClass('active');
+                }
+                $('#' + id + '_container').addClass('active');
+                return true;
+            },
+
+            /**
+             * Check if validate use attachment upload or not
+             */
+            allowUpload: function() {
+                if (this.verificationType == '0' || this.verificationType == '1') {
+                    return true;
+                }
+                return false;
             },
 
             processingFile: function(file) {
@@ -179,7 +257,7 @@ define([
 
                 this.showRowLoader();
 
-                formAttach.append($('#age-verification-attachment').attr("name"), file);
+                formAttach.append($('#age-verification-attachment').attr('name'), file);
                 if (window.FORM_KEY) {
                     formAttach.append('form_key', window.FORM_KEY);
                 }
@@ -194,6 +272,7 @@ define([
                         if(result['attachment_count']){
                             self.files = result['attachment_count'];
                         }
+                        $('.av-attachment-field').removeClass('error');
                         self.hideRowLoader();
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
@@ -205,7 +284,7 @@ define([
                     processData: false
                 });
             },
-            
+
             deleteFile: function(id, hash) {
                 var attachParams = {
                     'attachment': id,
